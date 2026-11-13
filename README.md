@@ -25,14 +25,14 @@ Jarvis provides multiple UI surfaces — a **CLI**, a **REST API**, and an optio
 ║  Cellular Calling · Dual-SIM Balance · Hands-Free Mode       ║
 ╚══════════════════════════════════════════════════════════════╝
 
-  [SIM1] +251954531474  →  Ethio Telecom   (*804#)   Sub ID: 2   ✅
-  [SIM2] +251998065377  →  Ethio Telecom   (*804#)   Sub ID: 5   ✅
+  [SIM1] +25195******4  →  Ethio Telecom   (*804#)   Sub ID: 2   ✅
+  [SIM2] +25199******7  →  Ethio Telecom   (*804#)   Sub ID: 5   ✅
   [MIC ] 🎤 Listening...  Confidence: 0.92   Engine: speech_recognition
   [TTS ] 🔊 pyttsx3 (rate=150, vol=0.8)                     ACTIVE
 
   ──────────────────────────────────────────────────────────────
-  jarvis> call 0922233398
-  🔊 "Initiating call to 0922233398. Do try to be coherent."
+  jarvis> call 092******8
+  🔊 "Initiating call to 092******8. Do try to be coherent."
   ✅ Call connected (00:00:03)
 
   jarvis> balance --sim SIM1
@@ -107,7 +107,7 @@ A lightweight browser UI served by FastAPI at `http://localhost:8000/ui`. Layout
 │  ┌───────────────────────┐   ┌───────────────────────┐                 │
 │  │  📞 CALL PANEL        │   │  💰 BALANCE PANEL     │                 │
 │  │  ┌─────────────────┐  │   │  SIM1  Ethio Telecom  │                 │
-│  │  │ 0922233398      │  │   │  Balance: 45.20 ETB   │                 │
+│  │  │ 092******8      │  │   │  Balance: 45.20 ETB   │                 │
 │  │  └─────────────────┘  │   │  [Check]  [Refresh]   │                 │
 │  │  [ Dial ]  [ Hangup ] │   │  SIM2  Ethio Telecom  │                 │
 │  │  Status: Idle 🟢      │   │  Balance: 12.80 ETB   │                 │
@@ -127,7 +127,7 @@ A lightweight browser UI served by FastAPI at `http://localhost:8000/ui`. Layout
 │                                                                        │
 │  ┌──────────────────────────────────────────────────────────────────┐ │
 │  │  📜 ACTIVITY LOG                                                 │ │
-│  │  12:01:03  CALL    → 0922233398        ✅ success                │ │
+│  │  12:01:03  CALL    → 092******8        ✅ success                │ │
 │  │  12:01:45  HANGUP  → call ended        ✅ success                │ │
 │  │  12:02:10  USSD    → SIM1 *804#        ✅ 45.20 ETB              │ │
 │  └──────────────────────────────────────────────────────────────────┘ │
@@ -287,7 +287,7 @@ A lightweight browser UI served by FastAPI at `http://localhost:8000/ui`. Layout
 {
   "sims": {
     "SIM1": {
-      "phone_number": "+251954531474",
+      "phone_number": "+25195******4",
       "network": null,
       "ussd_code": null,
       "sub_id": 2,
@@ -297,7 +297,7 @@ A lightweight browser UI served by FastAPI at `http://localhost:8000/ui`. Layout
       }
     },
     "SIM2": {
-      "phone_number": "+251998065377",
+      "phone_number": "+25199******7",
       "network": null,
       "ussd_code": null,
       "sub_id": 5,
@@ -349,14 +349,14 @@ python -c "from voice_interface import JarvisVoiceInterface; voice = JarvisVoice
 
 **Place a Call**
 ```bash
-# Voice command: "Call 0922233398"
-# Result: Initiating call to 0922233398. Do try to be coherent.
+# Voice command: "Call 092******8"
+# Result: Initiating call to 092******8. Do try to be coherent.
 ```
 
 **Check Balance**
 ```bash
 # Voice command: "Check balance for SIM1"
-# Result: Checking balance for SIM1 (Ethio Telecom, +251954531474) using *804# (Sub ID: 2)...
+# Result: Checking balance for SIM1 (Ethio Telecom, +25195*****4) using *804# (Sub ID: 2)...
 ```
 
 **Hang Up Call**
@@ -387,7 +387,7 @@ voice = JarvisVoiceIntegration(mode=VoiceIntegrationMode.HYBRID)
 voice.start()
 
 # Process voice command
-result = voice.process_voice_command(text="Call 0922233398")
+result = voice.process_voice_command(text="Call 092******8")
 print(f"Command result: {result}")
 
 # Get status
@@ -408,7 +408,7 @@ curl http://localhost:8000/health
 curl http://localhost:8000/sims
 
 # Place call via API
-curl -X POST http://localhost:8000/call -d "target=0922233398"
+curl -X POST http://localhost:8000/call -d "target=092******8"
 
 # Check balance via API
 curl -X POST http://localhost:8000/ussd/balance -d "sim_id=SIM1"
@@ -441,8 +441,8 @@ python -m pytest voice_tests/ -v
 ```
 
 All tests pass successfully:
-- ✅ SIM 1 (`+251954531474`) → Ethio Telecom (`*804#`)
-- ✅ SIM 2 (`+251998065377`) → Ethio Telecom (`*804#`) 
+- ✅ SIM 1 (`+25195******4`) → Ethio Telecom (`*804#`)
+- ✅ SIM 2 (`+25199******7`) → Ethio Telecom (`*804#`) 
 - ✅ Safaricom prefix (`+2517...`) → Safaricom Ethiopia (`*704#`)
 - ✅ Manual override functionality
 - ✅ Voice interface initialization
@@ -561,7 +561,7 @@ This repository implements a **cellular calling and dual-SIM balance manager** f
 {
   "sims": {
     "SIM1": {
-      "phone_number": "+251954531474",
+      "phone_number": "+25195******4",
       "network": null,
       "ussd_code": null,
       "sub_id": 2,
@@ -571,7 +571,7 @@ This repository implements a **cellular calling and dual-SIM balance manager** f
       }
     },
     "SIM2": {
-      "phone_number": "+251998065377",
+      "phone_number": "+25199******7",
       "network": null,
       "ussd_code": null,
       "sub_id": 5,
@@ -643,8 +643,8 @@ python jarvis_cli.py hangup
 ## Testing & Verification
 
 All tests pass successfully:
-- ✅ SIM 1 (`+251954531474`) → Ethio Telecom (`*804#`)
-- ✅ SIM 2 (`+251998065377`) → Ethio Telecom (`*804#`) 
+- ✅ SIM 1 (`+2519*******4`) → Ethio Telecom (`*804#`)
+- ✅ SIM 2 (`+2519*******7`) → Ethio Telecom (`*804#`) 
 - ✅ Safaricom prefix (`+2517...`) → Safaricom Ethiopia (`*704#`)
 - ✅ Manual override functionality
 
