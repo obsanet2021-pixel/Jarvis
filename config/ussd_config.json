@@ -1,0 +1,24 @@
+{
+  "sims": {
+    "SIM1": {
+      "phone_number": "+251954531474",
+      "network": null,
+      "ussd_code": null,
+      "sub_id": 2,
+      "manual_override": {
+        "network": null,
+        "ussd_code": null
+      }
+    },
+    "SIM2": {
+      "phone_number": "+251998065377",
+      "network": null,
+      "ussd_code": null,
+      "sub_id": 5,
+      "manual_override": {
+        "network": null,
+        "ussd_code": null
+      }
+    }
+  }
+}

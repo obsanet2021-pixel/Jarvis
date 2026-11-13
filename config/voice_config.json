@@ -1,0 +1,103 @@
+{
+  "voice": {
+    "enabled": true,
+    "engine": "speech_recognition",
+    "sample_rate": 16000,
+    "channels": 1,
+    "format": "wav",
+    "noise_reduction": true,
+    "echo_cancellation": true,
+    "vad_sensitivity": "medium",
+    "language": "en-US",
+    "auto_gain_control": true,
+    "fallback_engine": "pyttsx3"
+  },
+  "stt": {
+    "engine": "speech_recognition",
+    "language": "en-US",
+    "phrase_time_limit": 5,
+    "energy_threshold": 300,
+    "dynamic_energy_threshold": true,
+    "pause_threshold": 0.8,
+    "phrase_threshold": 0.3,
+    "backoff_threshold": 5000,
+    "dynamic_energy_ratio": 1.5
+  },
+  "tts": {
+    "engine": "pyttsx3",
+    "voice_id": 0,
+    "rate": 150,
+    "volume": 0.8,
+    "language": "en",
+    "voices": [
+      {"id": 0, "name": "Default", "languages": ["en"]},
+      {"id": 1, "name": "Female", "languages": ["en"]}
+    ]
+  },
+  "fish_audio": {
+    "enabled": false,
+    "api_key": null,
+    "model_id": "your-model-id",
+    "sample_rate": 22050,
+    "speed": 1.0,
+    "volume": 1.0,
+    "pitch": 1.0,
+    "emotion": "neutral"
+  },
+  "commands": {
+    "call_keywords": ["call", "dial", "contact", "phone", "reach", "connect"],
+    "balance_keywords": ["balance", "credit", "bill", "charge", "status", "standing"],
+    "hangup_keywords": ["hangup", "end", "stop", "cancel", "terminate", "finish", "close"],
+    "status_keywords": ["status", "state", "check", "system", "device", "network"],
+    "help_keywords": ["help", "assist", "guide", "support", "info", "information"],
+    "exit_keywords": ["exit", "quit", "stop", "goodbye", "off", "shutdown", "end"],
+    "emergency_keywords": ["emergency", "urgent", "critical", "help", "sos", "danger"],
+    "transfer_keywords": ["transfer", "forward", "redirect", "forwarding"],
+    "hold_keywords": ["hold", "pause", "mute", "silence", "parking"],
+    "resume_keywords": ["resume", "unhold", "continue", "resume"],
+    "manual_override_keywords": ["manual", "override", "configure", "setup"]
+  },
+  "audio": {
+    "sample_rate": 16000,
+    "channels":  "1",
+    "format": "wav",
+    "chunk_size": 1024,
+    "max_record_length": 30,
+    "min_record_length": 0.5
+  },
+  "vad": {
+    "silence_threshold": 300,
+    "silence_duration": 1.0,
+    "voice_activity_timeout": 5.0,
+    "min_speech_duration": 0.3,
+    "max_speech_duration": 10.0
+  },
+  "security": {
+    "require_confirmation": true,
+    "dangerous_commands": ["call", "emergency", "transfer", "hangup"],
+    "voice_authentication": false,
+    "speaker_verification": false,
+    "max_commands_per_minute": 10,
+    "rate_limiting_enabled": true,
+    "audit_logging": true,
+    "encryption_enabled": true,
+    "privacy_mode": "enhanced"
+  },
+  "performance": {
+    "enable_parallel_processing": true,
+    "max_threads": 4,
+    "cache_size": 100,
+    "enable_voice_caching": true,
+    "realtime_processing": true,
+    "low_latency_mode": true,
+    "power_efficiency": true
+  },
+  "analytics": {
+    "enable_command_analytics": true,
+    "enable_voice_analytics": true,
+    "retention_days": 30,
+    "anonymous_reporting": true,
+    "voice_quality_metrics": true,
+    "command_success_rate": true
+  }
+}

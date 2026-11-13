@@ -1,0 +1,256 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+import subprocess
+import time
+import json
+from datetime import datetime
+import tkinter.font as font
+
+class JarvisGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("JARVIS - AI Cellular Assistant")
+        self.root.geometry("800x600")
+        self.root.resizable(True, True)
+
+        self.create_interface()
+
+    def create_interface(self):
+        main_frame = ttk.Frame(self.root, padding="20")
+        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
+
+        title_label = ttk.Label(main_frame, text="JARVIS - AI Cellular Assistant",
+                              font=("Arial", 16, "bold"), foreground="#2E86C2")
+        title_label.grid(row=0, column=0, pady=(0, 20))
+
+        status_frame = ttk.LabelFrame(main_frame, text="Current Status", padding="15")
+        status_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=10)
+
+        self.status_label = ttk.Label(status_frame, text="Status: Ready",
+                                    font=("Arial", 12), foreground="#27AE60")
+        self.status_label.grid(row=0, column=0, sticky=tk.W)
+
+        info_frame = ttk.LabelFrame(main_frame, text="System Information", padding="15")
+        info_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=10)
+
+        self.info_text = tk.Text(info_frame, height=6, font=("Consolas", 10),
+                               bg="#F8F9FA", relief="solid", borderwidth=1)
+        self.info_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.info_text.insert(tk.END, "System: Jarvis Cellular\n")
+        self.info_text.insert(tk.END, "Version: 2.0.0\n")
+        self.info_text.insert(tk.END, "Python Telephony: Active\n")
+        self.info_text.insert(tk.END, "USSD Balance: Working\n")
+        self.info_text.insert(tk.END, "Android ADB: Connected\n")
+        self.info_text.config(state=tk.DISABLED)
+
+        control_frame = ttk.LabelFrame(main_frame, text="Control Commands", padding="15")
+        control_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=10)
+
+        buttons_frame = ttk.Frame(control_frame)
+        buttons_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=5, pady=5)
+
+        self.status_button = ttk.Button(buttons_frame, text="Check Status",
+                                       command=self.check_system_status)
+        self.status_button.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
+
+        self.call_button = ttk.Button(buttons_frame, text="Make Call",
+                                     command=self.make_call_dialog)
+        self.call_button.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
+
+        self.balance_button = ttk.Button(buttons_frame, text="Check Balance",
+                                        command=self.check_balance_dialog)
+        self.balance_button.grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
+
+        self.hangup_button = ttk.Button(buttons_frame, text="Hang Up Call",
+                                       command=self.hangup_call)
+        self.hangup_button.grid(row=1, column=1, padx=5, pady=5, sticky=tk.W)
+
+        log_frame = ttk.LabelFrame(main_frame, text="Action Log", padding="15")
+        log_frame.grid(row=4, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), pady=10)
+
+        self.log_text = tk.Text(log_frame, height=8, font=("Consolas", 10),
+                               bg="#2C3E50", fg="#ECF0F1", relief="solid", borderwidth=1)
+        self.log_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+        scrollbar = ttk.Scrollbar(log_frame, orient=tk.VERTICAL, command=self.log_text.yview)
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        self.log_text.configure(yscrollcommand=scrollbar.set)
+
+        self.log_text.insert(tk.END, "[JARVIS]: System initialized successfully\n")
+        self.log_text.config(state=tk.DISABLED)
+
+        output_frame = ttk.LabelFrame(main_frame, text="System Output", padding="15")
+        output_frame.grid(row=5, column=0, sticky=(tk.W, tk.E), pady=10)
+
+        self.output_text = tk.Text(output_frame, height=6, font=("Consolas", 10),
+                                  bg="#FFFFFF", relief="solid", borderwidth=1)
+        self.output_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.output_text.insert(tk.END, "Ready to process commands...\n")
+        self.output_text.config(state=tk.DISABLED)
+
+        help_frame = ttk.Frame(main_frame)
+        help_frame.grid(row=6, column=0, sticky=(tk.W, tk.E), pady=10)
+
+        help_text = ttk.Label(help_frame, text="Type 'help' in shell for commands | 'exit' to quit",
+                            font=("Arial", 12), foreground="#7F8C8D")
+        help_text.grid(row=0, column=0, sticky=tk.W)
+
+        self.exit_button = ttk.Button(help_frame, text="Exit Jarvis",
+                                     command=self.confirm_exit)
+        self.exit_button.grid(row=1, column=0, pady=5, sticky=tk.W)
+
+    def update_info_text(self, text):
+        self.info_text.config(state=tk.NORMAL)
+        self.info_text.delete(1.0, tk.END)
+        self.info_text.insert(tk.END, text)
+        self.info_text.config(state=tk.DISABLED)
+
+    def update_log(self, message):
+        self.log_text.config(state=tk.NORMAL)
+        current_time = datetime.now().strftime("%H:%M:%S")
+        self.log_text.insert(tk.END, f"[{current_time}] {message}")
+        self.log_text.see(tk.END)
+        self.log_text.config(state=tk.DISABLED)
+
+    def update_output(self, message):
+        self.output_text.config(state=tk.NORMAL)
+        current_time = datetime.now().strftime("%H:%M:%S")
+        self.output_text.insert(tk.END, f"[{current_time}] {message}\n")
+        self.output_text.see(tk.END)
+        self.output_text.config(state=tk.DISABLED)
+
+    def check_system_status(self):
+        self.update_log(f"[{datetime.now().strftime('%H:%M:%S')}] Executing: system status check\n")
+
+        try:
+            result = subprocess.run(
+                ["python", "jarvis_shell.py", "status"],
+                capture_output=True,
+                text=True,
+                cwd="C:\\Users\\Free user\\Jarvis",
+                timeout=5
+            )
+
+            if result.returncode == 0:
+                self.update_output(result.stdout)
+                self.update_log(f"[SUCCESS]: Status check completed\n")
+                self.current_status = "OK"
+                self.status_label.config(text="Status: OK", foreground="#27AE60")
+            else:
+                error_msg = result.stderr or "Unknown error"
+                self.update_log(f"[ERROR]: Status check failed: {error_msg}\n")
+                self.current_status = "ERROR"
+                self.status_label.config(text="Status: ERROR", foreground="#E74C3C")
+
+        except subprocess.TimeoutExpired:
+            self.update_log("[TIMEOUT]: Status check timed out\n")
+            self.current_status = "TIMEOUT"
+            self.status_label.config(text="Status: TIMEOUT", foreground="#F39C12")
+
+        except Exception as e:
+            self.update_log(f"[EXCEPTION]: {str(e)}\n")
+            self.current_status = "EXCEPTION"
+            self.status_label.config(text="Status: EXCEPTION", foreground="#E74C3C")
+
+    def make_call_dialog(self):
+        from tkinter.simpledialog import askstring
+
+        phone_number = askstring("Make Call", "Enter phone number:", initialvalue="1234567890")
+
+        if phone_number:
+            self.update_log(f"[{datetime.now().strftime('%H:%M:%S')}] Executing: make call to {phone_number}\n")
+
+            try:
+                result = subprocess.run(
+                    ["python", "jarvis_shell.py", "call", "--target", phone_number],
+                    capture_output=True,
+                    text=True,
+                    cwd="C:\\Users\\Free user\\Jarvis",
+                    timeout=10
+                )
+
+                if result.returncode == 0:
+                    self.update_output(result.stdout)
+                    self.update_log(f"[SUCCESS]: Call initiated successfully\n")
+                else:
+                    error_msg = result.stderr or "Unknown error"
+                    self.update_log(f"[ERROR]: Call failed: {error_msg}\n")
+
+            except subprocess.TimeoutExpired:
+                self.update_log("[TIMEOUT]: Call command timed out\n")
+            except Exception as e:
+                self.update_log(f"[EXCEPTION]: {str(e)}\n")
+
+    def check_balance_dialog(self):
+        from tkinter.simpledialog import askstring
+
+        sim = askstring("Check Balance", "SIM to check (SIM1 or SIM2):", initialvalue="SIM1")
+
+        if sim:
+            self.update_log(f"[{datetime.now().strftime('%H:%M:%S')}] Executing: check balance for {sim}\n")
+
+            try:
+                result = subprocess.run(
+                    ["python", "jarvis_shell.py", "balance", "--sim", sim],
+                    capture_output=True,
+                    text=True,
+                    cwd="C:\\Users\\Free user\\Jarvis",
+                    timeout=10
+                )
+
+                if result.returncode == 0:
+                    self.update_output(result.stdout)
+                    self.update_log(f"[SUCCESS]: Balance check completed\n")
+                else:
+                    error_msg = result.stderr or "Unknown error"
+                    self.update_log(f"[ERROR]: Balance check failed: {error_msg}\n")
+
+            except subprocess.TimeoutExpired:
+                self.update_log("[TIMEOUT]: Balance check timed out\n")
+            except Exception as e:
+                self.update_log(f"[EXCEPTION]: {str(e)}\n")
+
+    def hangup_call(self):
+        self.update_log(f"[{datetime.now().strftime('%H:%M:%S')}] Executing: hangup call\n")
+
+        try:
+            result = subprocess.run(
+                ["python", "jarvis_shell.py", "hangup"],
+                capture_output=True,
+                text=True,
+                cwd="C:\\Users\\Free user\\Jarvis",
+                timeout=5
+            )
+
+            if result.returncode == 0:
+                self.update_output(result.stdout)
+                self.update_log(f"[SUCCESS]: Call termination initiated\n")
+            else:
+                error_msg = result.stderr or "Unknown error"
+                self.update_log(f"[ERROR]: Hangup failed: {error_msg}\n")
+
+        except subprocess.TimeoutExpired:
+            self.update_log("[TIMEOUT]: Hangup command timed out\n")
+        except Exception as e:
+            self.update_log(f"[EXCEPTION]: {str(e)}\n")
+
+    def confirm_exit(self):
+        from tkinter.messagebox import askyesno
+
+        if askyesno("Exit Jarvis", "Are you sure you want to exit Jarvis?"):
+            self.root.destroy()
+
+    def on_closing(self):
+        self.confirm_exit()
+
+def main():
+    root = tk.Tk()
+    app = JarvisGUI(root)
+    root.protocol("WM_DELETE_WINDOW", app.on_closing)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
