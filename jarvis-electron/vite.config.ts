@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 export default defineConfig({
+  // Relative asset paths are required because Electron loads dist/index.html
+  // over file://, where absolute /assets paths resolve to the filesystem root.
+  base: './',
   plugins: [react()],
   resolve: {
     alias: {

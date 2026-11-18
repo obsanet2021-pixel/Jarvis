@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import * as THREE from 'three'
 import { useJarvisStore } from '../store'
 import { HologramState } from '../types'
 
@@ -21,8 +22,6 @@ export default function Hologram({ state }: HologramProps) {
 
     const init = () => {
       if (!containerRef.current) return
-
-      const THREE = (window as any).THREE || require('three')
 
       scene = new THREE.Scene()
       scene.fog = new THREE.FogExp2(0x0a0f0d, 0.02)
@@ -294,7 +293,7 @@ export default function Hologram({ state }: HologramProps) {
       }
     }
 
-    init()
+    return init()
   }, [state])
 
   return (

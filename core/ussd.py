@@ -1,6 +1,10 @@
 import json
+import os
 import subprocess
 import time
+from pathlib import Path
+
+DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "ussd_config.json"
 
 
 class USSDManager:
@@ -25,11 +29,13 @@ class USSDManager:
         self,
         adb_path,
         device_id,
-        config_path=r"C:\Users\Free user\Jarvis\config\ussd_config.json",
+        config_path=None,
     ):
         self.adb_path = adb_path
         self.device_id = device_id
-        self.config_path = config_path
+        self.config_path = config_path or os.environ.get(
+            "JARVIS_USSD_CONFIG", DEFAULT_CONFIG_PATH
+        )
         self.config = self.load_config()
 
     def load_config(self):

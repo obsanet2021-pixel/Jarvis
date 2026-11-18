@@ -36,42 +36,46 @@ export default function ChatPanel() {
     setIsWorking(true)
 
     try {
-      // Check for cellular commands in natural language
+      // Route known cellular commands through their dedicated endpoints for reliability
       const lower = userMessage.toLowerCase()
 
-      if (lower.includes('call') && /\d{7,15}/.test(userMessage)) {
-        const match = userMessage.match(/\+?\d{1,3}[-\s]?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}|\d{7,15}/)
+      if ((lower.includes('call') || lower.includes('dial') || lower.includes('phone')) && /\d{7,15}/.test(userMessage)) {
+        const match = userMessage.match(/[\+]?[\d\-\s]{7,15}/)
         const target = match?.[0]
         if (target) {
           const result = await api.call(target)
           const assistantMsg = {
             id: `msg_${Date.now() + 1}`,
             role: 'assistant' as const,
-            content: `Call initiated to ${target}. ${result.output || 'Call command sent to Android device.'}`,
+            content: `Call initiated to ${target}. ${result.output || 'Dial command sent to device.'}`,
             timestamp: Date.now(),
           }
           addConversation(assistantMsg)
           setHologramState('WORKING')
+          setIsSpeaking(true)
+          setTimeout(() => { setIsSpeaking(false); setHologramState('IDLE') }, 2000)
           return
         }
       }
 
       if (lower.includes('balance') || lower.includes('credit') || lower.includes('check balance')) {
-        const simMatch = userMessage.match(/SIM[12]/)
-        const simId = simMatch ? simMatch[0] : 'SIM1'
+        const simMatch = userMessage.match(/SIM\s*(\d)/i)
+        const simId = simMatch ? `SIM${simMatch[1]}` : 'SIM1'
         const result = await api.balance(simId)
         const assistantMsg = {
           id: `msg_${Date.now() + 1}`,
           role: 'assistant' as const,
-            content: `Balance check for ${result.sim} (${result.network}): ${result.message}`,
-            timestamp: Date.now(),
-          }
+          content: `Balance check for ${result.sim} (${result.network}): ${result.message}`,
+          timestamp: Date.now(),
+        }
         addConversation(assistantMsg)
         setHologramState('WORKING')
+        setIsSpeaking(true)
+        setTimeout(() => { setIsSpeaking(false); setHologramState('IDLE') }, 2000)
         return
       }
 
-      if (lower.includes('hangup') || lower.includes('end call')) {
+      if (lower.includes('hangup') || lower.includes('end call') || lower.includes('stop call')) {
         const result = await api.hangup()
         const assistantMsg = {
           id: `msg_${Date.now() + 1}`,
@@ -89,25 +93,24 @@ export default function ChatPanel() {
         const assistantMsg = {
           id: `msg_${Date.now() + 1}`,
           role: 'assistant' as const,
-          content: `System status: ${status.call_state || 'No active call state detected.'}`,
+          content: `System status — call state: ${status.call_state}, ADB connected: ${status.adb_connected ? 'yes' : 'no'}`,
           timestamp: Date.now(),
         }
         addConversation(assistantMsg)
         return
       }
 
-      // Generic assistant response
-      setTimeout(() => {
-        const assistantMsg = {
-          id: `msg_${Date.now() + 1}`,
-          role: 'assistant' as const,
-          content: `I've received your message: "${userMessage}". How can I help you further?`,
-          timestamp: Date.now(),
-        }
-        addConversation(assistantMsg)
-        setHologramState('IDLE')
-        setIsWorking(false)
-      }, 1000)
+      // Fallback: send through the voice command processor for natural-language handling
+      const voiceResult = await api.processVoiceCommand(userMessage)
+      const assistantMsg = {
+        id: `msg_${Date.now() + 1}`,
+        role: 'assistant' as const,
+        content: voiceResult.success ? voiceResult.response : `I didn't understand: "${userMessage}". Try "help" for commands.`,
+        timestamp: Date.now(),
+      }
+      addConversation(assistantMsg)
+      setHologramState('IDLE')
+      setIsWorking(false)
     } catch (err: any) {
       const errorMsg = {
         id: `msg_${Date.now() + 1}`,

@@ -29,6 +29,10 @@ class EventType(Enum):
     TASK_SCHEDULED = "task.scheduled"
     TASK_COMPLETED = "task.completed"
     ERROR = "error"
+    WAKE_WORD_DETECTED = "wake_word.detected"
+    COMMAND_TRANSCRIBED = "command.transcribed"
+    SPEECH_STARTING = "speech.starting"
+    SPEECH_ENDED = "speech.ended"
 
 
 @dataclass

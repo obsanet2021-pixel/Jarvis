@@ -1,7 +1,8 @@
 import sys
 import unittest
+from pathlib import Path
 
-sys.path.append(r"C:\Users\Free user\Jarvis")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from core.ussd import USSDManager
 
 class TestUSSDConfigurationAndPrefixes(unittest.TestCase):

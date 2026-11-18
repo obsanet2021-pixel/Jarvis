@@ -1,5 +1,5 @@
 import React from 'react'
-import { useJarvisStore } from '../store'
+import { useJarvisStore } from '../../store'
 
 export default function DashboardPanel() {
   const { deviceStatus, sims } = useJarvisStore()

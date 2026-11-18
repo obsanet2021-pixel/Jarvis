@@ -29,6 +29,23 @@ function createWindow() {
     else {
         mainWindow.loadFile(path_1.default.join(__dirname, '../dist/index.html'));
     }
+    mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+        console.log(`[renderer:${level}] ${message} (${sourceId}:${line})`);
+    });
+    mainWindow.webContents.on('did-fail-load', (_event, code, description, url) => {
+        console.error(`[did-fail-load] ${code} ${description} ${url}`);
+    });
+    mainWindow.webContents.on('render-process-gone', (_event, details) => {
+        console.error(`[render-process-gone] ${JSON.stringify(details)}`);
+    });
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.executeJavaScript(`({
+            rootChildren: document.getElementById('root')?.childElementCount ?? -1,
+            hasAppGrid: !!document.getElementById('app'),
+            canvases: document.querySelectorAll('canvas').length,
+            text: (document.body.innerText || '').slice(0, 80),
+        })`).then((info) => console.log('[dom]', JSON.stringify(info)));
+    });
     mainWindow.on('closed', () => {
         mainWindow = null;
     });

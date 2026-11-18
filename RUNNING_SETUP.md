@@ -62,7 +62,7 @@ python jarvis_shell.py status
 
 **Make a Call**
 ```bash
-python jarvis_shell.py call --target 5551234567
+python jarvis_shell.py call --target 0708976912
 ```
 
 **Check Balance**
@@ -105,7 +105,7 @@ curl -X POST http://localhost:8000/ussd/balance -H "Content-Type: application/js
 | Command | Description | Example |
 |---------|-------------|---------|
 | `python jarvis_shell.py status` | Check device status | `python jarvis_shell.py status` |
-| `python jarvis_shell.py call --target <num>` | Initiate call | `python jarvis_shell.py call --target 1234567890` |
+| `python jarvis_shell.py call --target <num>` | Initiate call | `python jarvis_shell.py call --target 0708976912` |
 | `python jarvis_shell.py hangup` | Terminate call | `python jarvis_shell.py hangup` |
 | `python jarvis_shell.py balance [--sim SIM1|SIM2]` | Check balance | `python jarvis_shell.py balance` |
 | `python jarvis_shell.py help` | Show help | `python jarvis_shell.py help` |

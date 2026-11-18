@@ -1,8 +1,11 @@
 # FastAPI service layer for Jarvis cellular assistant
 
+import os
+import sys
 import subprocess
 import time
 import logging
+from pathlib import Path
 from typing import Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,10 +21,12 @@ app = FastAPI(
 )
 
 # Enable CORS for cross-origin requests
+# Wildcard origins cannot be combined with credentialed requests; the
+# desktop UI needs neither cookies nor credentials.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -30,9 +35,190 @@ app.add_middleware(
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Global service instances
-ADB_PATH = r"C:\Users\Free user\Jarvis\platform-tools\platform-tools\adb.exe"
-DEVICE_ID = "d12090e57900"
+# Resolve tooling relative to the project so the API is not tied to one machine.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _find_adb() -> str:
+    for candidate in (
+        os.environ.get("JARVIS_ADB_PATH"),
+        PROJECT_ROOT / "platform-tools" / "platform-tools" / "adb.exe",
+        PROJECT_ROOT / "platform-tools-extracted" / "platform-tools" / "adb.exe",
+    ):
+        if candidate and Path(candidate).exists():
+            return str(candidate)
+    return "adb"
+
+
+ADB_PATH = _find_adb()
+
+
+def _detect_device_id() -> str:
+    configured = os.environ.get("JARVIS_DEVICE_ID")
+    if configured:
+        return configured
+    try:
+        result = subprocess.run(
+            [ADB_PATH, "devices"], capture_output=True, text=True, timeout=10, check=False
+        )
+        for line in result.stdout.splitlines()[1:]:
+            parts = line.split()
+            if len(parts) >= 2 and parts[1] == "device":
+                return parts[0]
+    except (OSError, subprocess.SubprocessError):
+        logger.warning("Could not auto-detect an Android device via ADB")
+    return ""
+
+
+DEVICE_ID = _detect_device_id()
+
+# Allow imports of sibling project modules when running via `python api/main.py`
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from voice_command_processor import VoiceCommandProcessor
+from voice_interface import JarvisVoiceInterface
+from jarvis_voice_integration import JarvisVoiceIntegration, VoiceStatus
+
+
+# ---------------------------------------------------------------------------
+# Global voice service instances (lazily initialised on first use)
+# ---------------------------------------------------------------------------
+_voice_integration: Optional[JarvisVoiceIntegration] = None
+_voice_interface: Optional[JarvisVoiceInterface] = None
+_command_processor: Optional[VoiceCommandProcessor] = None
+
+
+def get_voice_integration() -> JarvisVoiceIntegration:
+    global _voice_integration
+    if _voice_integration is None:
+        config_path = str(PROJECT_ROOT / "config" / "voice_config.json")
+        _voice_integration = JarvisVoiceIntegration(config_path=config_path, mode=None)
+    return _voice_integration
+
+
+def get_voice_interface() -> JarvisVoiceInterface:
+    global _voice_interface
+    if _voice_interface is None:
+        config_path = str(PROJECT_ROOT / "config" / "voice_config.json")
+        _voice_interface = JarvisVoiceInterface(config_path=config_path)
+    return _voice_interface
+
+
+def get_command_processor() -> VoiceCommandProcessor:
+    global _command_processor
+    if _command_processor is None:
+        config_path = str(PROJECT_ROOT / "config" / "voice_config.json")
+        _command_processor = VoiceCommandProcessor(config_path=config_path)
+    return _command_processor
+
+
+@app.post("/voice/process")
+async def process_voice_command(
+    text: str,
+    processor: VoiceCommandProcessor = Depends(get_command_processor),
+    telephony: AndroidTelephonyAdapter = Depends(get_telephony_service),
+):
+    """Process a natural-language command via the voice command engine."""
+    try:
+        logger.info(f"Processing voice command: {text}")
+        result = processor.execute_command(text)
+        if not result or not result.get("success"):
+            # Fallback: try simple keyword matching for cellular commands
+            lower = text.lower()
+            if "call" in lower and any(c.isdigit() for c in text):
+                import re as _re
+                match = _re.search(r'[\+]?[\d\-\s]{7,15}', text)
+                if match:
+                    call_result = telephony.dial(match.group())
+                    return {
+                        "success": True,
+                        "response": f"Initiating call to {match.group()}",
+                        "raw": result,
+                    }
+            if "balance" in lower or "credit" in lower:
+                return {"success": True, "response": "Balance check initiated", "raw": result}
+            if "hangup" in lower or "end call" in lower:
+                telephony.hangup()
+                return {"success": True, "response": "Call terminated", "raw": result}
+            return {"success": False, "response": "Command not recognised.", "raw": result}
+        return {"success": True, "response": result.get("response", ""), "raw": result}
+    except Exception as e:
+        logger.error(f"Error processing voice command: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/voice/listen/start")
+async def start_voice_listening():
+    """Start continuous voice listening mode."""
+    try:
+        integration = get_voice_integration()
+        integration.start()
+        interface = get_voice_interface()
+        interface.is_listening = True
+        return {"status": "listening_started"}
+    except Exception as e:
+        logger.error(f"Error starting voice listen: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/voice/listen/stop")
+async def stop_voice_listening():
+    """Stop continuous voice listening mode."""
+    try:
+        integration = get_voice_integration()
+        integration.stop()
+        interface = get_voice_interface()
+        interface.is_listening = False
+        return {"status": "listening_stopped"}
+    except Exception as e:
+        logger.error(f"Error stopping voice listen: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/voice/status")
+async def get_voice_status():
+    """Return current voice engine status."""
+    try:
+        integration = get_voice_integration()
+        vstatus = integration.get_status()
+        interface = get_voice_interface()
+        return {
+            "integration_status": vstatus.value if isinstance(vstatus, VoiceStatus) else str(vstatus),
+            "is_listening": getattr(interface, "is_listening", False),
+            "is_speaking": getattr(interface, "is_speaking", False),
+            "metrics": integration.metrics if hasattr(integration, "metrics") else {},
+        }
+    except Exception as e:
+        logger.warning(f"Could not read voice status: {e}")
+        return {
+            "integration_status": "unknown",
+            "is_listening": False,
+            "is_speaking": False,
+            "error": str(e),
+        }
+
+
+@app.get("/voice/history")
+async def get_voice_history(limit: int = 20):
+    """Return recent voice command history."""
+    try:
+        integration = get_voice_integration()
+        history = integration.get_command_history()
+        return {"history": history[-limit:] if isinstance(history, list) else []}
+    except Exception as e:
+        logger.warning(f"Could not read voice history: {e}")
+        return {"history": []}
+
+
+@app.get("/voice/help")
+async def get_voice_help():
+    """Return available voice command help."""
+    try:
+        integration = get_voice_integration()
+        return {"help": integration.get_help()}
+    except Exception as e:
+        return {"help": [], "error": str(e)}
+
 
 def get_telephony_service() -> AndroidTelephonyAdapter:
     """Get telephony service instance"""
@@ -151,34 +337,31 @@ async def check_balance(
 async def get_system_status(
     telephony: AndroidTelephonyAdapter = Depends(get_telephony_service)
 ):
-    """Get system status including call state"""
+    """Get system status. Degrades gracefully when no phone is attached."""
+    call_state = "unavailable"
+    adb_connected = False
     try:
-        call_state = telephony.get_call_state()
-
-        return {
-            "status": "system_status",
-            "call_state": call_state,
-            "timestamp": time.time()
-        }
+        adb_connected = bool(DEVICE_ID)
+        if adb_connected:
+            call_state = telephony.get_call_state() or "unknown"
     except Exception as e:
-        logger.error(f"Error getting system status: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.warning(f"Could not read call state: {e}")
+
+    return {
+        "status": "system_status",
+        "call_state": call_state,
+        "device_id": DEVICE_ID or None,
+        "adb_connected": adb_connected,
+        "timestamp": time.time()
+    }
 
 @app.get("/network")
-async def detect_network(
-    telephony: AndroidTelephonyAdapter = Depends(get_telephony_service)
-):
-    """Detect network from phone number"""
-    try:
-        # Test with a sample number
-        test_number = "+251954531474"
-
-        return {
-            "status": "network_detection",
-            "detected_network": "Ethio Telecom",
-            "detected_ussd_code": "*804#",
-            "sample_number": test_number
-        }
-    except Exception as e:
-        logger.error(f"Error in network detection: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+async def detect_network(number: str = "+251954531474"):
+    """Detect the operator and USSD code for a phone number."""
+    network, ussd_code = USSDManager.identify_network(number)
+    return {
+        "status": "network_detection",
+        "detected_network": network,
+        "detected_ussd_code": ussd_code,
+        "sample_number": number,
+    }
