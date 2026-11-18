@@ -11,6 +11,174 @@ This version includes comprehensive **voice interface capabilities** that enable
 - Provide hands-free operation of calling and balance checking
 - Support real-time voice interaction with Android companion device
 
+---
+
+## 🖥️ User Interface
+
+Jarvis provides multiple UI surfaces — a **CLI**, a **REST API**, and an optional **Web Dashboard**. Below are the interface mockups and specifications.
+
+### 1. CLI Interface (Terminal)
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  🤖  J A R V I S   v2.1   —   Voice Interface Integration     ║
+║  Cellular Calling · Dual-SIM Balance · Hands-Free Mode       ║
+╚══════════════════════════════════════════════════════════════╝
+
+  [SIM1] +25195******4  →  Ethio Telecom   (*804#)   Sub ID: 2   ✅
+  [SIM2] +25199******7  →  Ethio Telecom   (*804#)   Sub ID: 5   ✅
+  [MIC ] 🎤 Listening...  Confidence: 0.92   Engine: speech_recognition
+  [TTS ] 🔊 pyttsx3 (rate=150, vol=0.8)                     ACTIVE
+
+  ──────────────────────────────────────────────────────────────
+  jarvis> call 092******8
+  🔊 "Initiating call to 092******8. Do try to be coherent."
+  ✅ Call connected (00:00:03)
+
+  jarvis> balance --sim SIM1
+  🔊 "Checking financial standing on SIM1 (Ethio Telecom). Stand by."
+  ✅ Balance: 45.20 ETB | Valid until: 2026-11-30
+
+  jarvis> hangup
+  🔊 "Terminating call. Another riveting conversation cut short."
+  ✅ Call ended (duration 00:01:42)
+
+  jarvis> status
+  ┌──────────────┬──────────────────────────────────────────┐
+  │ Component    │ Status                                   │
+  ├──────────────┼──────────────────────────────────────────┤
+  │ STT Engine   │ ✅ speech_recognition (en-US)            │
+  │ TTS Engine   │ ✅ pyttsx3 (voice_id=0)                  │
+  │ SIM1         │ ✅ Ethio Telecom — ready                 │
+  │ SIM2         │ ✅ Ethio Telecom — ready                 │
+  │ Android Link │ ✅ Connected (USB / ADB)                 │
+  └──────────────┴──────────────────────────────────────────┘
+
+  jarvis> help
+  🔊 "Available voice commands: call, dial, balance, hangup, status, help."
+  ──────────────────────────────────────────────────────────────
+  [Ctrl+C to exit]                         jarvis>
+```
+
+---
+
+### 2. REST API Interface (HTTP)
+
+| Method | Endpoint              | Description                          | Example Request                          |
+|--------|-----------------------|--------------------------------------|------------------------------------------|
+| `GET`  | `/health`             | Service health check                 | `curl http://localhost:8000/health`      |
+| `GET`  | `/status`             | Full system status                   | `curl http://localhost:8000/status`      |
+| `GET`  | `/sims`               | List SIM details                     | `curl http://localhost:8000/sims`        |
+| `POST` | `/call`               | Place a call                         | `curl -X POST -d "target=0922233398"`    |
+| `POST` | `/hangup`             | Terminate active call                | `curl -X POST http://localhost:8000/hangup` |
+| `POST` | `/ussd/balance`       | Check balance for a SIM              | `curl -X POST -d "sim_id=SIM1"`          |
+| `POST` | `/voice/command`      | Process a voice/text command         | `curl -X POST -d "text=Check balance"`   |
+
+**Example Response — `GET /status`**
+```json
+{
+  "status": "ok",
+  "voice": {
+    "stt_available": true,
+    "tts_available": true,
+    "engine": "speech_recognition",
+    "language": "en-US"
+  },
+  "sims": {
+    "SIM1": { "network": "Ethio Telecom", "ussd_code": "*804#", "sub_id": 2 },
+    "SIM2": { "network": "Ethio Telecom", "ussd_code": "*804#", "sub_id": 5 }
+  },
+  "android_link": "connected",
+  "uptime_seconds": 3721
+}
+```
+
+---
+
+### 3. Web Dashboard (Optional — `web/dashboard.html`)
+
+A lightweight browser UI served by FastAPI at `http://localhost:8000/ui`. Layout mockup:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│  🤖 JARVIS DASHBOARD                             🟢 Connected   ⚙️     │
+├────────────────────────────────────────────────────────────────────────┤
+│                                                                        │
+│  ┌───────────────────────┐   ┌───────────────────────┐                 │
+│  │  📞 CALL PANEL        │   │  💰 BALANCE PANEL     │                 │
+│  │  ┌─────────────────┐  │   │  SIM1  Ethio Telecom  │                 │
+│  │  │ 092******8      │  │   │  Balance: 45.20 ETB   │                 │
+│  │  └─────────────────┘  │   │  [Check]  [Refresh]   │                 │
+│  │  [ Dial ]  [ Hangup ] │   │  SIM2  Ethio Telecom  │                 │
+│  │  Status: Idle 🟢      │   │  Balance: 12.80 ETB   │                 │
+│  └───────────────────────┘   │  [Check]  [Refresh]   │                 │
+│                              └───────────────────────┘                 │
+│                                                                        │
+│  ┌──────────────────────────────────────────────────────────────────┐ │
+│  │  🎤 VOICE CONSOLE                                                │ │
+│  │  ┌────────────────────────────────────────────────────────────┐  │ │
+│  │  │ > Check balance for SIM1                                   │  │ │
+│  │  └────────────────────────────────────────────────────────────┘  │ │
+│  │  [ 🎤 Speak ]  [ ▶️ Send ]  [ 🔊 TTS: ON ]                       │ │
+│  │  ────────────────────────────────────────────────────────────── │ │
+│  │  🔊 "Checking balance for SIM1 (Ethio Telecom) using *804#..."  │ │
+│  │  ✅ Balance: 45.20 ETB                                          │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+│                                                                        │
+│  ┌──────────────────────────────────────────────────────────────────┐ │
+│  │  📜 ACTIVITY LOG                                                 │ │
+│  │  12:01:03  CALL    → 092******8        ✅ success                │ │
+│  │  12:01:45  HANGUP  → call ended        ✅ success                │ │
+│  │  12:02:10  USSD    → SIM1 *804#        ✅ 45.20 ETB              │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+**Dashboard Features:**
+- **Live status indicator** (green = connected, red = offline)
+- **Call panel** — dial pad input, Dial/Hangup buttons, live call timer
+- **Balance panel** — per-SIM cards with balance display and refresh
+- **Voice console** — text input + microphone button, TTS toggle, response stream
+- **Activity log** — timestamped audit trail of all commands (mirrors security logging)
+
+---
+
+### 4. Voice Command UI Flow
+
+```
+   ┌──────────┐    ┌──────────────┐    ┌──────────────┐    ┌───────────┐
+   │  🎤 Mic  │──▶ │  Noise Red.  │──▶ │  STT Engine  │──▶ │  Command  │
+   └──────────┘    └──────────────┘    └──────────────┘    │  Parser   │
+                                                          └─────┬─────┘
+                                                                │
+                          ┌─────────────────────────────────────┼──────────────┐
+                          ▼                                     ▼              ▼
+                   ┌─────────────┐                     ┌─────────────┐  ┌───────────┐
+                   │  📞 Call    │                     │  💰 Balance │  │  ❓ Help  │
+                   └──────┬──────┘                     └──────┬──────┘  └─────┬─────┘
+                          │                                   │               │
+                          └───────────────┬───────────────────┴───────────────┘
+                                          ▼
+                                  ┌──────────────┐
+                                  │  TTS Engine  │──▶ 🔊 Voice Response
+                                  └──────────────┘
+```
+
+---
+
+### 5. UI Component Reference
+
+| Component              | File / Endpoint                      | Purpose                              |
+|------------------------|--------------------------------------|--------------------------------------|
+| CLI shell              | `jarvis_cli.py`                      | Terminal REPL with AI persona        |
+| REST API               | `fastapi` app (port 8000)            | Programmatic control                 |
+| Web dashboard          | `web/dashboard.html`                 | Browser GUI                          |
+| Voice console widget   | `voice_interface.py`                 | Mic input + TTS output               |
+| Status panel           | `GET /status`                        | Health & SIM state                   |
+| Activity log           | `logs/jarvis_audit.log`              | Auditable command history            |
+
+---
+
 ## Key Features
 
 ### 1. Cellular Calling
@@ -29,7 +197,7 @@ This version includes comprehensive **voice interface capabilities** that enable
 
 ### 3. Dual-SIM Balance Manager
 - **Automatic network detection**: Identify SIM operator using Ethiopian number prefixes
-- **Prefix-based routing**: 
+- **Prefix-based routing**:
   - `+2519...` or `09...` → **Ethio Telecom** (`*804#`)
   - `+2517...` or `07...` → **Safaricom Ethiopia** (`*704#`)
 - **Manual overrides**: Configure specific SIM networks if automatic detection fails
@@ -51,6 +219,8 @@ This version includes comprehensive **voice interface capabilities** that enable
 - `voice_interface.py` - Voice recognition and synthesis module
 - `voice_command_processor.py` - Advanced voice command processing
 - `jarvis_voice_integration.py` - Comprehensive voice integration
+- `web/dashboard.html` - Web dashboard UI *(new)*
+- `web/api.py` - FastAPI REST endpoints *(new)*
 
 ### Voice Processing Pipeline
 1. **Audio Capture**: Microphone input or audio file
@@ -117,7 +287,7 @@ This version includes comprehensive **voice interface capabilities** that enable
 {
   "sims": {
     "SIM1": {
-      "phone_number": "+251954531474",
+      "phone_number": "+25195******4",
       "network": null,
       "ussd_code": null,
       "sub_id": 2,
@@ -127,7 +297,7 @@ This version includes comprehensive **voice interface capabilities** that enable
       }
     },
     "SIM2": {
-      "phone_number": "+251998065377",
+      "phone_number": "+25199******7",
       "network": null,
       "ussd_code": null,
       "sub_id": 5,
@@ -157,7 +327,15 @@ This version includes comprehensive **voice interface capabilities** that enable
 3. Configure Android companion device
 4. Set up SIM configuration in `config/ussd_config.json`
 5. Configure voice settings in `config/voice_config.json`
-6. Run the CLI interface
+6. Run the CLI interface **or** launch the web dashboard:
+   ```bash
+   # CLI
+   python jarvis_cli.py
+
+   # Web dashboard + API
+   uvicorn web.api:app --host 0.0.0.0 --port 8000
+   # → open http://localhost:8000/ui
+   ```
 
 ### Running Tests
 ```bash
@@ -171,14 +349,14 @@ python -c "from voice_interface import JarvisVoiceInterface; voice = JarvisVoice
 
 **Place a Call**
 ```bash
-# Voice command: "Call 0922233398"
-# Result: Initiating call to 0922233398. Do try to be coherent.
+# Voice command: "Call 092******8"
+# Result: Initiating call to 092******8. Do try to be coherent.
 ```
 
 **Check Balance**
 ```bash
 # Voice command: "Check balance for SIM1"
-# Result: Checking balance for SIM1 (Ethio Telecom, +251954531474) using *804# (Sub ID: 2)...
+# Result: Checking balance for SIM1 (Ethio Telecom, +25195*****4) using *804# (Sub ID: 2)...
 ```
 
 **Hang Up Call**
@@ -209,7 +387,7 @@ voice = JarvisVoiceIntegration(mode=VoiceIntegrationMode.HYBRID)
 voice.start()
 
 # Process voice command
-result = voice.process_voice_command(text="Call 0922233398")
+result = voice.process_voice_command(text="Call 092******8")
 print(f"Command result: {result}")
 
 # Get status
@@ -230,10 +408,13 @@ curl http://localhost:8000/health
 curl http://localhost:8000/sims
 
 # Place call via API
-curl -X POST http://localhost:8000/call -d "target=0922233398"
+curl -X POST http://localhost:8000/call -d "target=092******8"
 
 # Check balance via API
 curl -X POST http://localhost:8000/ussd/balance -d "sim_id=SIM1"
+
+# Process voice/text command
+curl -X POST http://localhost:8000/voice/command -d "text=Check balance for SIM1"
 
 # Get system status
 curl http://localhost:8000/status
@@ -260,8 +441,8 @@ python -m pytest voice_tests/ -v
 ```
 
 All tests pass successfully:
-- ✅ SIM 1 (`+251954531474`) → Ethio Telecom (`*804#`)
-- ✅ SIM 2 (`+251998065377`) → Ethio Telecom (`*804#`) 
+- ✅ SIM 1 (`+25195******4`) → Ethio Telecom (`*804#`)
+- ✅ SIM 2 (`+25199******7`) → Ethio Telecom (`*804#`) 
 - ✅ Safaricom prefix (`+2517...`) → Safaricom Ethiopia (`*704#`)
 - ✅ Manual override functionality
 - ✅ Voice interface initialization
@@ -300,6 +481,13 @@ All tests pass successfully:
 - **Emotion detection**: Adjust response tone based on emotion
 - **Personalization**: Learn user preferences and patterns
 
+### UI Enhancements
+- **Mobile-responsive dashboard**: Optimized for phones and tablets
+- **Dark/light theme toggle**: User-selectable dashboard themes
+- **Real-time WebSocket updates**: Live call timer and balance refresh
+- **Drag-and-drop call queue**: Manage multiple call requests
+- **Voice waveform visualizer**: Live audio feedback during STT
+
 ### Integration Enhancements
 - **WebSocket integration**: Real-time bidirectional communication
 - **Cloud voice services**: Integrate with cloud TTS/STT services
@@ -324,6 +512,8 @@ For technical issues or feature requests related to the voice interface:
 4. **Features**: Request new voice capabilities and features
 
 The voice interface provides a comprehensive solution for hands-free operation of Jarvis, enabling users to interact naturally through voice commands while maintaining all existing functionality and security measures.
+
+---
 
 ## Overview
 This repository implements a **cellular calling and dual-SIM balance manager** for an AI assistant named **Jarvis**. The project uses an Android companion device as a cellular interface to enable phone calls and USSD-based balance checks.
@@ -371,7 +561,7 @@ This repository implements a **cellular calling and dual-SIM balance manager** f
 {
   "sims": {
     "SIM1": {
-      "phone_number": "+251954531474",
+      "phone_number": "+25195******4",
       "network": null,
       "ussd_code": null,
       "sub_id": 2,
@@ -381,7 +571,7 @@ This repository implements a **cellular calling and dual-SIM balance manager** f
       }
     },
     "SIM2": {
-      "phone_number": "+251998065377",
+      "phone_number": "+25199******7",
       "network": null,
       "ussd_code": null,
       "sub_id": 5,
@@ -453,8 +643,8 @@ python jarvis_cli.py hangup
 ## Testing & Verification
 
 All tests pass successfully:
-- ✅ SIM 1 (`+251954531474`) → Ethio Telecom (`*804#`)
-- ✅ SIM 2 (`+251998065377`) → Ethio Telecom (`*804#`) 
+- ✅ SIM 1 (`+2519*******4`) → Ethio Telecom (`*804#`)
+- ✅ SIM 2 (`+2519*******7`) → Ethio Telecom (`*804#`) 
 - ✅ Safaricom prefix (`+2517...`) → Safaricom Ethiopia (`*704#`)
 - ✅ Manual override functionality
 
@@ -476,5 +666,4 @@ All tests pass successfully:
 
 ## Support
 
-For technical issues or feature requests, please refer to the project documentation or contact the development team.#   J a r v i s  
- 
+For technical issues or feature requests, please refer to the project documentation or contact the development team.
