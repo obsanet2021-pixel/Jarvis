@@ -29,3 +29,9 @@ Thumbs.db
 # TypeScript build cache
 tsconfig.tsbuildinfo
 **/tsconfig.tsbuildinfo
+# JARVIS local Python environment
+.wakevenv/
+.wakevenv
+# Python generated files
+__pycache__/
+*.py[cod]
