@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050b12"><title>J.A.R.V.I.S. — Command Interface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="ambient"></div><div class="grain"></div>
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark"><span></span><span></span><span></span></div><div><b>J.A.R.V.I.S.</b><small>PERSONAL INTELLIGENCE</small></div></div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav id="nav">
+    <button class="nav-item active" data-page="overview"><i>◈</i> Overview <kbd>01</kbd></button>
+    <button class="nav-item" data-page="activity"><i>⌁</i> Activity <kbd>02</kbd></button>
+    <button class="nav-item" data-page="tasks"><i>▤</i> Directives <kbd>03</kbd></button>
+    <button class="nav-item" data-page="devices"><i>⌘</i> Hardware <kbd>04</kbd></button>
+    <button class="nav-item" data-page="memory"><i>◉</i> Memory <kbd>05</kbd></button>
+  </nav>
+  <div class="sidebar-bottom"><div class="connection"><span class="pulse"></span><div><b>CORE LINK ACTIVE</b><small>Encrypted local session</small></div></div><div class="version">JARVIS INTERFACE <span>v1.0.0</span></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="crumb"><span>STARK SYSTEMS</span><i>/</i><b id="crumbPage">OVERVIEW</b></div><div class="top-actions"><div class="top-status"><span class="pulse"></span> ALL SYSTEMS NOMINAL</div><button class="icon-btn" id="soundBtn" title="Toggle interface sound">◖</button><div class="avatar">S</div></div></header>
+<section class="workspace" id="page-overview">
+  <div class="hero-head"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR INTELLIGENCE, AT A GLANCE</div><h1>Good morning<span class="cyan">.</span></h1><p class="subhead">All systems are operational. Here's your current overview.</p></div><div class="clock-wrap"><div id="clock">--:--:--</div><span id="date">LOCAL SYSTEM TIME</span></div></div>
+  <div class="overview-grid">
+    <section class="panel model-panel">
+      <div class="panel-top"><div><span class="section-index">01 / HOLOGRAPHIC PROJECTION</span><h2>Hologram interface</h2></div><div class="live-chip"><span class="pulse"></span> LIVE RENDER</div></div>
+      <div id="modelStage"><div class="model-loading" id="modelLoading"><div class="loader-ring"></div><b>INITIALIZING PROJECTION</b><small>Loading Hologram.glb</small></div><div class="model-caption"><span>FIG. 01</span><span>HOLOGRAPHIC AVATAR · 3D</span></div><div class="model-tools"><button id="rotateBtn" class="tool-btn active" title="Toggle rotation">↻</button><button id="resetBtn" class="tool-btn" title="Reset view">⌖</button><button id="uploadBtn" class="tool-btn" title="Load another model">＋</button><input type="file" id="modelFile" accept=".glb,.gltf" hidden></div></div>
+      <div class="model-footer"><div><small>PROJECTION STATUS</small><b><span class="dot"></span> STABLE / 60 FPS TARGET</b></div><div class="intensity"><label for="intensity">HOLOGRAM INTENSITY <span id="intensityValue">78%</span></label><input type="range" id="intensity" min="20" max="120" value="78"></div></div>
+    </section>
+    <div class="right-stack">
+      <section class="panel greeting-panel"><div class="panel-top"><div><span class="section-index">02 / ASSISTANT</span><h2>At your service.</h2></div><div class="assistant-orb"><span></span></div></div><p class="assistant-copy" id="assistantMessage">Good morning. I've completed a preliminary systems check. Everything is running within normal parameters.</p><div class="assistant-meta"><span><i class="dot"></i> LISTENING FOR COMMAND</span><span>J.A.R.V.I.S. CORE</span></div></section>
+      <section class="panel power-panel"><div class="panel-top"><div><span class="section-index">03 / ENERGY RESERVE</span><h2>Power systems</h2></div><span class="tiny-label">MAIN REACTOR</span></div><div class="power-readout"><strong id="powerNumber">100</strong><span>%</span><div class="power-ring"><svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="43"/><circle class="ring-progress" id="powerRing" cx="50" cy="50" r="43"/></svg><div class="ring-core">ARC</div></div></div><div class="power-bottom"><span><i class="dot"></i> OUTPUT NOMINAL</span><b>STABLE</b></div></section>
+    </div>
+    <section class="panel metrics-panel"><div class="panel-top"><div><span class="section-index">04 / PERFORMANCE</span><h2>System telemetry</h2></div><span class="tiny-label">SIMULATED DEMO DATA</span></div><div class="metrics-grid"><div class="metric"><div class="metric-head"><span>PROCESSOR</span><b id="cpuVal">24%</b></div><div class="meter"><span id="cpuBar" style="width:24%"></span></div><small>12-CORE COMPUTE</small></div><div class="metric"><div class="metric-head"><span>MEMORY</span><b id="ramVal">48%</b></div><div class="meter"><span id="ramBar" style="width:48%"></span></div><small>16.0 GB ALLOCATED</small></div><div class="metric"><div class="metric-head"><span>THERMAL</span><b id="tempVal">42°C</b></div><div class="meter"><span id="tempBar" style="width:42%"></span></div><small>CORE TEMPERATURE</small></div><div class="metric"><div class="metric-head"><span>NETWORK</span><b id="netVal">86%</b></div><div class="meter"><span id="netBar" style="width:86%"></span></div><small>LINK QUALITY</small></div></div></section>
+    <section class="panel directives-panel"><div class="panel-top"><div><span class="section-index">05 / PRIORITY QUEUE</span><h2>Active directives</h2></div><button class="text-btn" data-goto="tasks">VIEW ALL ↗</button></div><div id="directiveList" class="directive-list"></div></section>
+    <section class="panel activity-panel"><div class="panel-top"><div><span class="section-index">06 / EVENT STREAM</span><h2>Recent activity</h2></div><button class="text-btn" data-goto="activity">VIEW LOG ↗</button></div><div id="activityList" class="activity-list"></div></section>
+  </div>
+  <footer class="footerline"><span>J.A.R.V.I.S. / AUTONOMOUS INTERFACE</span><span>SECURE CHANNEL <i class="dot"></i> ENCRYPTED</span><span>© STARK SYSTEMS</span></footer>
+</section>
+<section class="workspace inner-page hidden" id="page-activity"><div class="page-heading"><div class="eyebrow">SYSTEM RECORDS / 02</div><h1>Activity log<span class="cyan">.</span></h1><p class="subhead">A chronological record of events in this demo session.</p></div><div class="panel page-panel"><div class="panel-top"><h2>Event stream</h2><span class="tiny-label">LOCAL SESSION</span></div><div id="fullActivity" class="full-list"></div></div></section>
+<section class="workspace inner-page hidden" id="page-tasks"><div class="page-heading"><div class="eyebrow">EXECUTION QUEUE / 03</div><h1>Directives<span class="cyan">.</span></h1><p class="subhead">Track and complete the example tasks in your command queue.</p></div><div class="panel page-panel"><div class="panel-top"><h2>Priority queue</h2><span class="tiny-label" id="taskCount">03 OPEN</span></div><div id="fullTasks" class="full-list"></div><div class="add-task"><input id="newTask" placeholder="Add a directive…" maxlength="90"><button id="addTask">ADD DIRECTIVE +</button></div></div></section>
+<section class="workspace inner-page hidden" id="page-devices"><div class="page-heading"><div class="eyebrow">CONNECTED HARDWARE / 04</div><h1>Hardware<span class="cyan">.</span></h1><p class="subhead">Example device states for the dashboard preview.</p></div><div class="device-grid" id="deviceGrid"></div></section>
+<section class="workspace inner-page hidden" id="page-memory"><div class="page-heading"><div class="eyebrow">KNOWLEDGE STORE / 05</div><h1>Memory<span class="cyan">.</span></h1><p class="subhead">A sample memory interface. No personal data is stored.</p></div><div class="panel page-panel"><div class="panel-top"><h2>Session notes</h2><span class="tiny-label">DEMO CONTENT ONLY</span></div><div class="memory-note"><span>01</span><div><b>Dashboard objective</b><p>Present a clear overview of the holographic projection and system status.</p></div></div><div class="memory-note"><span>02</span><div><b>Visual identity</b><p>Deep navy interface, electric cyan projection, amber edge highlights.</p></div></div><div class="memory-note"><span>03</span><div><b>Asset source</b><p>Hologram.glb and materials.json supplied with this project.</p></div></div></div></section>
+<div class="command-dock"><span class="command-mark">⌘</span><input id="commandInput" autocomplete="off" placeholder="Ask J.A.R.V.I.S. or enter a command…"><kbd>ENTER ↵</kbd><button id="sendCommand" aria-label="Send command">↑</button></div>
+</main>
+<div id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body></html>

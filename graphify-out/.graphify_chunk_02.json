@@ -1,0 +1,251 @@
+{
+  "nodes": [
+    {
+      "id": "screen_screenshot_jarvis_app",
+      "label": "Jarvis Mobile App Screenshot",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_status_bar",
+      "label": "Status Bar",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": "0-192px (top)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_header",
+      "label": "Header Area",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": "192-432px",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_main_content",
+      "label": "Main Content Area",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": "432-1392px",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_action_bar",
+      "label": "Action/Input Bar",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": "1392-1560px",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_bottom_nav",
+      "label": "Bottom Navigation Bar",
+      "file_type": "image",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": "1560-2400px (bottom)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_chat_interface",
+      "label": "Chat Interface Pattern",
+      "file_type": "concept",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_dark_theme",
+      "label": "Dark Theme Design",
+      "file_type": "concept",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_bottom_navigation",
+      "label": "Bottom Navigation Pattern",
+      "file_type": "concept",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_voice_ai",
+      "label": "Voice AI Interaction Design",
+      "file_type": "concept",
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_status_bar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_header",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_main_content",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_action_bar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_bottom_nav",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app_main_content",
+      "target": "screen_screenshot_jarvis_app_chat_interface",
+      "relation": "exemplifies",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app",
+      "target": "screen_screenshot_jarvis_app_dark_theme",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app_bottom_nav",
+      "target": "screen_screenshot_jarvis_app_bottom_navigation",
+      "relation": "exemplifies",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app_action_bar",
+      "target": "screen_screenshot_jarvis_app_voice_ai",
+      "relation": "suggests",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "screen_screenshot_jarvis_app_chat_interface",
+      "target": "screen_screenshot_jarvis_app_voice_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "screen_screenshot_jarvis_app_ui_layout",
+      "label": "Mobile App UI Layout Pattern",
+      "nodes": [
+        "screen_screenshot_jarvis_app_status_bar",
+        "screen_screenshot_jarvis_app_header",
+        "screen_screenshot_jarvis_app_main_content",
+        "screen_screenshot_jarvis_app_action_bar",
+        "screen_screenshot_jarvis_app_bottom_nav"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png"
+    },
+    {
+      "id": "screen_screenshot_jarvis_app_voice_interaction_flow",
+      "label": "Voice AI Interaction Flow",
+      "nodes": [
+        "screen_screenshot_jarvis_app_action_bar",
+        "screen_screenshot_jarvis_app_voice_ai",
+        "screen_screenshot_jarvis_app_chat_interface"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "C:\\Users\\Free user\\Jarvis\\screen.png"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "coverage": {
+    "C:\\Users\\Free user\\Jarvis\\screen.png": 2400
+  }
+}

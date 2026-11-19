@@ -1,0 +1,15 @@
+{
+  "name": "jarvis",
+  "version": "1.0.0",
+  "description": "JARVIS cellular assistant with social media integration via Composio",
+  "type": "module",
+  "main": "socials.js",
+  "scripts": {
+    "socials": "node --env-file=.env socials.js",
+    "connect": "node --env-file=.env connect.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

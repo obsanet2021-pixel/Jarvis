@@ -1,0 +1,345 @@
+
+{
+  "file_path": "C:\Users\Free user\Jarvis\platform-tools-extracted\platform-tools\NOTICE.txt",
+  "knowledge_graph_fragment": {
+    "licenses": [
+      {
+        "name": "Apache License",
+        "version": "2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0"
+      },
+      {
+        "name": "ICU License",
+        "description": "The ICU license is now in plain text format, see LICENSE.",
+        "url": "http://www.unicode.org/copyright.html"
+      },
+      {
+        "name": "MIT License",
+        "description": "HarfBuzz is licensed under the so-called \"Old MIT\" license. Details follow."
+      },
+      {
+        "name": "BSD License",
+        "description": "Various BSD-style licenses, including 2-clause and 3-clause BSD."
+      },
+      {
+        "name": "GNU General Public License",
+        "version": "2.0",
+        "description": "Mentioned in relation to other software, e.g., Yasm."
+      },
+      {
+        "name": "GNU Library General Public License",
+        "version": "2.0",
+        "description": "Mentioned in relation to other software, e.g., Yasm."
+      },
+      {
+        "name": "MPL",
+        "version": "1.1",
+        "description": "Mozilla Public License"
+      }
+    ],
+    "copyright_holders": [
+      {
+        "name": "Android Open Source Project",
+        "years": "2005-2008, 2010"
+      },
+      {
+        "name": "Unicode, Inc.",
+        "years": "1991-2008, 2016-2023"
+      },
+      {
+        "name": "International Business Machines Corporation",
+        "years": "1995-2016"
+      },
+      {
+        "name": "Apache Software Foundation",
+        "years": "1999-2006"
+      },
+      {
+        "name": "Google Inc.",
+        "years": "2008, 2009, 2010, 2011, 2012, 2013"
+      },
+      {
+        "name": "V8 project authors",
+        "years": "2006-2011"
+      },
+      {
+        "name": "Scott James Remnant",
+        "years": "2004"
+      },
+      {
+        "name": "Dan Nicholson",
+        "years": "2012-2015"
+      },
+      {
+        "name": "Massachusetts Institute of Technology",
+        "years": "1991"
+      },
+      {
+        "name": "The Go Authors",
+        "years": "2009"
+      },
+      {
+        "name": "Brotli Authors",
+        "years": "2009, 2010, 2013-2016"
+      },
+      {
+        "name": "Thai Open Source Software Center Ltd",
+        "years": "1998-2000, 1998-2000"
+      },
+      {
+        "name": "Expat maintainers",
+        "years": "2001-2025, 2001, 2002, 2003, 2004, 2005, 2006"
+      },
+      {
+        "name": "Simonas Kazlauskas",
+        "years": "2015"
+      },
+      {
+        "name": "Carl Lerche and other MIO contributors",
+        "years": "2014"
+      },
+      {
+        "name": "MaidSafe.net limited",
+        "years": "2018"
+      },
+      {
+        "name": "messense",
+        "years": "2020"
+      },
+      {
+        "name": "Ilson Roberto Balliego Junior",
+        "years": "2021"
+      },
+      {
+        "name": "Samsung Electronics Co., Ltd.",
+        "years": "2012"
+      },
+      {
+        "name": "Victor Zverovich and {fmt} contributors",
+        "years": "2012-2016, 2012-present"
+      },
+      {
+        "name": "Glenn Randers-Pehrson",
+        "years": "1998-2000, 2000-2002, 2004, 2006-2018"
+      },
+      {
+        "name": "Andreas Dilger",
+        "years": "1996-1997"
+      },
+      {
+        "name": "Guy Eric Schalnat, Group 42, Inc.",
+        "years": "1995-1996"
+      },
+      {
+        "name": "Yann Collet",
+        "years": "2011-2020"
+      },
+      {
+        "name": "Colin Percival",
+        "years": "2003-2005"
+      },
+      {
+        "name": "Tung Mac",
+        "years": "2009"
+      },
+      {
+        "name": "The Chromium Authors",
+        "years": "2011"
+      },
+      {
+        "name": "Apple Computer, Inc.",
+        "description": "Mentioned as a copyright holder for some files"
+      },
+      {
+        "name": "Manfred Moitzi",
+        "years": "2012"
+      },
+      {
+        "name": "IOLA and Ole Laursen",
+        "years": "2007-2009"
+      },
+      {
+        "name": "The FreeType Project",
+        "description": "Portions of this software"
+      },
+      {
+        "name": "Eric S. Raymond",
+        "years": "2005"
+      },
+      {
+        "name": "Google, Inc.",
+        "years": "2010, 2011, 2012"
+      },
+      {
+        "name": "Mozilla Foundation",
+        "years": "2012"
+      },
+      {
+        "name": "Codethink Limited",
+        "years": "2011"
+      },
+      {
+        "name": "Nokia Corporation and/or its subsidiary(-ies)",
+        "years": "2008, 2010"
+      },
+      {
+        "name": "Keith Stribley",
+        "years": "2009"
+      },
+      {
+        "name": "Martin Hosken and SIL International",
+        "years": "2009"
+      },
+      {
+        "name": "Chris Wilson",
+        "years": "2007"
+      },
+      {
+        "name": "Behdad Esfahbod",
+        "years": "2006"
+      },
+      {
+        "name": "David Turner",
+        "years": "1998-2004, 2005"
+      },
+      {
+        "name": "Werner Lemberg",
+        "years": "1998-2004"
+      },
+      {
+        "name": "Red Hat, Inc.",
+        "years": "2004, 2007, 2008, 2009, 2010"
+      },
+      {
+        "name": "Jason Evans",
+        "years": "2006-2008"
+      },
+      {
+        "name": "Baptiste Lepilleur",
+        "years": "2007-2010"
+      },
+      {
+        "name": "The Khronos Group Inc.",
+        "years": "2007-2010"
+      },
+      {
+        "name": "Silicon Graphics, Inc.",
+        "years": "1992"
+      },
+      {
+        "name": "The LevelDB Authors",
+        "years": "2011"
+      },
+      {
+        "name": "Niels Provos",
+        "years": "2000-2007, 2007-2009"
+      },
+      {
+        "name": "Nick Mathewson",
+        "years": "2007-2009"
+      },
+      {
+        "name": "Jonathan 'Wolf' Rentzsch",
+        "years": "2003-2009"
+      },
+      {
+        "name": "Brian Paul",
+        "years": "1999-2007"
+      },
+      {
+        "name": "MolokoCacao",
+        "years": "2008"
+      },
+      {
+        "name": "Sergey Lyubka",
+        "years": "2004-2009"
+      },
+      {
+        "name": "Xiph.Org",
+        "years": "2001-2011"
+      },
+      {
+        "name": "Skype Limited",
+        "years": "2001-2011"
+      },
+      {
+        "name": "Octasic",
+        "years": "2001-2011"
+      },
+      {
+        "name": "Microsoft Corporation",
+        "years": "2001-2011"
+      },
+      {
+        "name": "Broadcom Corporation",
+        "years": "2001-2011"
+      },
+      {
+        "name": "Peter Johnson and other Yasm developers",
+        "years": "2001-2010"
+      }
+    ],
+    "components": [
+      {
+        "name": "Android",
+        "licensed_under": ["Apache License 2.0"],
+        "copyright_holders": ["Android Open Source Project"]
+      },
+      {
+        "name": "ICU",
+        "licensed_under": ["ICU License"],
+        "copyright_holders": ["Unicode, Inc.", "International Business Machines Corporation"]
+      },
+      {
+        "name": "Google double-conversion",
+        "copyright_holders": ["Google Inc."]
+      },
+      {
+        "name": "Brotli",
+        "copyright_holders": ["Brotli Authors"]
+      },
+      {
+        "name": "Expat",
+        "copyright_holders": ["Thai Open Source Software Center Ltd", "Expat maintainers"]
+      },
+      {
+        "name": "MIO",
+        "copyright_holders": ["Carl Lerche and other MIO contributors"]
+      },
+      {
+        "name": "libpng",
+        "copyright_holders": ["Glenn Randers-Pehrson", "Andreas Dilger", "Guy Eric Schalnat, Group 42, Inc."]
+      },
+      {
+        "name": "ZSTD",
+        "copyright_holders": ["Yann Collet"]
+      },
+      {
+        "name": "HarfBuzz",
+        "licensed_under": ["MIT License"],
+        "copyright_holders": ["Google, Inc.", "Mozilla Foundation", "Codethink Limited", "Nokia Corporation and/or its subsidiary(-ies)", "Keith Stribley", "Martin Hosken and SIL International", "Chris Wilson", "Behdad Esfahbod", "David Turner", "Werner Lemberg", "Red Hat, Inc."]
+      },
+      {
+        "name": "LevelDB",
+        "copyright_holders": ["The LevelDB Authors"]
+      },
+      {
+        "name": "{fmt}",
+        "copyright_holders": ["Victor Zverovich and {fmt} contributors"]
+      },
+      {
+        "name": "Opus",
+        "copyright_holders": ["Xiph.Org", "Skype Limited", "Octasic", "Microsoft Corporation", "Broadcom Corporation"]
+      },
+      {
+        "name": "Yasm",
+        "licensed_under": ["GNU General Public License 2.0", "GNU Library General Public License 2.0", "BSD License"],
+        "copyright_holders": ["Peter Johnson and other Yasm developers"]
+      },
+      {
+        "name": "Google Test",
+        "copyright_holders": ["Google"]
+      }
+    ]
+  }
+}

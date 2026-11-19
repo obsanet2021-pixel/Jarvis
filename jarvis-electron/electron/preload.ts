@@ -9,3 +9,10 @@ contextBridge.exposeInMainWorld('jarvisAPI', {
   },
   send: (channel: string, ...args: any[]) => ipcRenderer.send(channel, ...args),
 })
+
+// KARION bridge — Firestore + E2EE operations via secure main process
+contextBridge.exposeInMainWorld('karionAPI', {
+  invoke: (channel: string, ...args: any[]) => ipcRenderer.invoke(`karion:${channel}`, ...args),
+  state: (): Promise<{ ok: boolean; data: { connected: boolean; pairing?: { uid: string; deviceName: string }; lastError: string | null } }> =>
+    ipcRenderer.invoke('karion:state').then((res) => ({ ok: true, data: res })),
+})

@@ -6,210 +6,106 @@ import { DeviceStatus } from '../types'
 export default function DevicesPanel() {
   const [status, setStatus] = useState<DeviceStatus | null>(null)
   const [loading, setLoading] = useState(true)
-  const { setDeviceStatus, setSims } = useJarvisStore()
+  const { setDeviceStatus, setSims, addNotification } = useJarvisStore()
 
   useEffect(() => {
     const load = async () => {
       try {
         const [simRes] = await Promise.allSettled([api.sims()])
-        if (simRes.status === 'fulfilled') {
-          setSims(simRes.value)
-        }
-
+        if (simRes.status === 'fulfilled') setSims(simRes.value)
         const sims = simRes.status === 'fulfilled' ? simRes.value : null
-        const sim1Avail = !!(sims?.SIM1?.phone_number)
-        const sim2Avail = !!(sims?.SIM2?.phone_number)
-
         const deviceStatus: DeviceStatus = {
-          windows: 'connected',
-          android: 'unknown',
-          adb: 'connected',
-          sim1: sim1Avail ? 'available' : 'unavailable',
-          sim2: sim2Avail ? 'available' : 'unavailable',
-          backend: 'online',
-          ai_service: 'online',
+          windows: 'connected', android: 'unknown', adb: 'connected',
+          sim1: !!(sims?.SIM1?.phone_number) ? 'available' : 'unavailable',
+          sim2: !!(sims?.SIM2?.phone_number) ? 'available' : 'unavailable',
+          backend: 'online', ai_service: 'online',
         }
-
         setStatus(deviceStatus)
         setDeviceStatus(deviceStatus)
-      } catch (err) {
-        console.error('Failed to load device status:', err)
-      } finally {
-        setLoading(false)
-      }
+      } catch (err) { console.error(err) } finally { setLoading(false) }
     }
     load()
   }, [])
 
-  const statusColors: Record<string, string> = {
-    connected: 'text-emerald-400',
-    disconnected: 'text-red-400',
-    unknown: 'text-gray-400',
-    available: 'text-emerald-400',
-    unavailable: 'text-gray-400',
-    online: 'text-emerald-400',
-    offline: 'text-red-400',
-  }
-
   const handleCheckBalance = async (simId: string) => {
     try {
       const result = await api.balance(simId)
-      alert(`Balance for ${simId}: ${result.message}`)
+      addNotification({
+        id: `notif_${Date.now()}`,
+        type: 'success',
+        title: 'Balance Check',
+        message: `${simId}: ${result.message}`,
+        timestamp: Date.now(),
+        read: false,
+      })
     } catch (err: any) {
-      alert(`Error: ${err.message || 'Failed to check balance'}`)
+      addNotification({
+        id: `notif_${Date.now()}`,
+        type: 'error',
+        title: 'Balance Error',
+        message: err.message || 'Failed to check balance',
+        timestamp: Date.now(),
+        read: false,
+      })
     }
   }
 
-  const handleInitiateCall = async () => {
-    const target = prompt('Enter phone number to call:')
-    if (target) {
-      try {
-        await api.call(target)
-        alert(`Call initiated to ${target}`)
-      } catch (err: any) {
-        alert(`Error: ${err.message || 'Failed to initiate call'}`)
-      }
-    }
-  }
-
-  const handleHangup = async () => {
-    try {
-      await api.hangup()
-      alert('Call terminated')
-    } catch (err: any) {
-      alert(`Error: ${err.message || 'Failed to hang up'}`)
-    }
-  }
+  const statusOk = (val?: string) => !!val && ['connected', 'available', 'online'].includes(val)
 
   return (
-    <div className="h-full flex flex-col bg-black/30 rounded-2xl border border-white/10 overflow-hidden">
-      <div className="h-12 border-b border-white/10 flex items-center justify-between px-4 bg-black/20">
-        <h3 className="text-sm font-semibold text-white">Device Status</h3>
-        <button
-          onClick={() => window.location.reload()}
-          className="w-8 h-8 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors text-xs"
-        >
-          ↻
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center h-40 text-gray-400">
-            <div className="w-6 h-6 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin mb-2"></div>
-            <p>Loading device status...</p>
+    <div className="workspace">
+      <div className="hero-head mb-[23px]">
+        <div>
+          <div className="eyebrow flex items-center gap-[9px] text-[#70a9bb]">
+            <span className="eyebrow-line w-[20px] h-[1px] bg-[var(--cyan)] shadow-[0_0_8px_var(--cyan)] inline-block"></span>
+            HARDWARE STATUS
           </div>
-        ) : (
-          <>
-            <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-              <h4 className="text-xs font-semibold text-gray-400 uppercase mb-4">Connection Status</h4>
-              <div className="space-y-3">
-                {[
-                  { label: 'Windows Backend', key: 'windows' },
-                  { label: 'Android Device', key: 'android' },
-                  { label: 'ADB Bridge', key: 'adb' },
-                  { label: 'AI Service', key: 'ai_service' },
-                ].map((item) => {
-                  const val = status?.[item.key as keyof DeviceStatus]
-                  return (
-                    <div
-                      key={item.key}
-                      className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0"
-                    >
-                      <span className="text-sm text-gray-300">{item.label}</span>
-                      <span className={`text-xs font-mono ${statusColors[val || 'unknown']}`}>
-                        {val ? val.charAt(0).toUpperCase() + val.slice(1) : 'Unknown'}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-              <h4 className="text-xs font-semibold text-gray-400 uppercase mb-4">SIM Cards</h4>
-              <div className="space-y-4">
-                {[1, 2].map((n) => {
-                  const key = `sim${n}` as keyof DeviceStatus
-                  const simData = {
-                    phone_number: null,
-                    network: null,
-                    ussd_code: null,
-                    sub_id: null,
-                  }
-                  const isAvailable = status?.[key] === 'available'
-                  return (
-                    <div
-                      key={key}
-                      className={`flex items-center justify-between py-3 px-3 rounded-lg border ${
-                        isAvailable ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-white/10'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <div className={`w-2.5 h-2.5 rounded-full ${isAvailable ? 'bg-emerald-500' : 'bg-gray-600'}`}></div>
-                        <div>
-                          <div className="text-sm font-medium text-white">SIM {n}</div>
-                          <div className="text-xs text-gray-400">
-                            {simData.phone_number || 'Not configured'}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`text-xs font-mono capitalize ${isAvailable ? 'text-emerald-400' : 'text-gray-500'}`}>
-                          {isAvailable ? 'Available' : 'Unavailable'}
-                        </span>
-                        <button
-                          onClick={() => handleCheckBalance(`SIM${n}`)}
-                          className="w-8 h-8 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-emerald-400 transition-colors text-xs"
-                        >
-                          💰
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-              <div className="mt-4 flex gap-2">
-                <button
-                  onClick={handleInitiateCall}
-                  className="flex-1 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-gray-300 hover:text-white transition-colors"
-                >
-                  📞 Initiate Call
-                </button>
-                <button
-                  onClick={handleHangup}
-                  className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  📴 Hang Up
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-black/20 rounded-xl border border-white/10 p-5">
-              <h4 className="text-xs font-semibold text-gray-400 uppercase mb-4">USSD Balance</h4>
-              <p className="text-xs text-gray-500 mb-3">
-                Check SIM balance using the configured USSD codes (*804# / *704#)
-              </p>
-              <div className="space-y-3">
-                {[1, 2].map((n) => (
-                  <button
-                    key={n}
-                    onClick={() => handleCheckBalance(`SIM${n}`)}
-                    className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm transition-colors ${
-                      status?.[`sim${n}` as keyof DeviceStatus] === 'available'
-                        ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20'
-                        : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'
-                    }`}
-                  >
-                    <span>Check SIM {n} Balance</span>
-                    <span className="text-xs">{`*${n === 1 ? '804' : '704'}#`}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+          <h1 className="font-display font-medium text-[clamp(34px,4vw,49px)] leading-[1] tracking-[.015em] text-[#e4f6fa] mt-[11px] mb-[7px]">
+            Hardware<span className="text-[var(--cyan)]">.</span>
+          </h1>
+          <p className="text-[11px] text-[var(--muted)]">Connected devices and cellular integration status.</p>
+        </div>
       </div>
+
+      <div className="device-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[14px]">
+        {[
+          { label: 'Windows Backend', key: 'windows' as const, icon: '⊞' },
+          { label: 'Android Device', key: 'android' as const, icon: '📱' },
+          { label: 'ADB Bridge', key: 'adb' as const, icon: '↕' },
+          { label: 'AI Service', key: 'ai_service' as const, icon: '⌘' },
+          { label: 'SIM 1', key: 'sim1' as const, icon: '💳' },
+          { label: 'SIM 2', key: 'sim2' as const, icon: '💳' },
+        ].map(({ label, key, icon }) => {
+          const val = status?.[key]
+          const ok = statusOk(val)
+          return (
+            <section key={key} className="panel device-card border border-[var(--line)] overflow-hidden relative before:absolute before:top-0 before:left-0 before:w-[34px] before:h-[1px] before:bg-[var(--cyan)] before:shadow-[0_0_9px_var(--cyan)]">
+              <div className="panel-top relative px-[18px] pt-[16px]">
+                <span className="section-index text-[8px] text-[#648c9d] block">{icon}</span>
+                <h2 className="font-display font-medium text-[18px] tracking-[.035em] text-[#d9f3f9] mt-[4px] mb-0">{label}</h2>
+              </div>
+              <div className="p-[14px_18px]">
+                <div className={`text-[10px] tracking-[.1em] ${ok ? 'text-[var(--green)]' : 'text-[#ff8a8a]'}`} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span className="dot" style={{ background: ok ? 'var(--green)' : '#ff8a8a', boxShadow: `0 0 7px ${ok ? 'var(--green)' : '#ff8a8a'}` }}></span>
+                  {(val || 'unknown').toUpperCase()}
+                </div>
+              </div>
+              {key.startsWith('sim') && (
+                <div className="mx-[18px] pb-[14px] border-t border-[var(--line)] pt-[10px]">
+                  <button onClick={() => handleCheckBalance(key.toUpperCase())} className="text-btn uppercase">CHECK BALANCE</button>
+                </div>
+              )}
+            </section>
+          )
+        })}
+      </div>
+
+      {loading && (
+        <div className="mt-[14px] panel p-[40px] border border-[var(--line)] text-center text-[var(--muted)] text-[10px] tracking-[.1em]">
+          <div className="w-[24px] h-[24px] border-2 border-[var(--cyan)] border-t-transparent animate-spin rounded-full mx-auto mb-3"></div>
+          SCANNING DEVICES...
+        </div>
+      )}
     </div>
   )
 }

@@ -1,28 +1,31 @@
 import { create } from 'zustand';
-import { JarvisState, HologramState, ConversationMessage, Task, ApprovalRequest, Notification, DeviceStatus } from '../types';
+import { JarvisState, PersistedSettings } from '../types';
+
+const DEFAULT_SETTINGS: PersistedSettings = { voiceSTT: true };
 
 interface JarvisStore extends JarvisState {
-  setHologramState: (state: HologramState) => void;
+  setHologramState: (state: any) => void;
   setIsListening: (v: boolean) => void;
   setIsSpeaking: (v: boolean) => void;
   setIsWorking: (v: boolean) => void;
-  setCurrentTask: (task: Task | null) => void;
-  setDeviceStatus: (status: DeviceStatus | null) => void;
+  setCurrentTask: (task: any) => void;
+  setDeviceStatus: (status: any) => void;
   setSims: (sims: any) => void;
   setHealth: (health: any) => void;
-  addConversation: (msg: ConversationMessage) => void;
-  setConversations: (msgs: ConversationMessage[]) => void;
-  setTasks: (tasks: Task[]) => void;
-  addTask: (task: Task) => void;
-  updateTask: (id: string, updates: Partial<Task>) => void;
-  setApprovals: (approvals: ApprovalRequest[]) => void;
-  addApproval: (approval: ApprovalRequest) => void;
+  addConversation: (msg: any) => void;
+  setConversations: (msgs: any) => void;
+  setTasks: (tasks: any) => void;
+  addTask: (task: any) => void;
+  updateTask: (id: string, updates: any) => void;
+  setApprovals: (approvals: any) => void;
+  addApproval: (approval: any) => void;
   removeApproval: (id: string) => void;
-  addNotification: (notif: Notification) => void;
+  addNotification: (notif: any) => void;
   markNotificationRead: (id: string) => void;
   clearNotifications: () => void;
   setSidebarOpen: (v: boolean) => void;
   setActiveSection: (section: string) => void;
+  setSettings: (s: Partial<PersistedSettings>) => void;
   reset: () => void;
 }
 
@@ -41,6 +44,8 @@ const initialState: JarvisState = {
   notifications: [],
   sidebarOpen: true,
   activeSection: 'home',
+  settings: DEFAULT_SETTINGS,
+  voiceSTT: DEFAULT_SETTINGS.voiceSTT,
 };
 
 export const useJarvisStore = create<JarvisStore>((set) => ({
@@ -54,7 +59,7 @@ export const useJarvisStore = create<JarvisStore>((set) => ({
   setDeviceStatus: (status) => set({ deviceStatus: status }),
   setSims: (sims) => set({ sims }),
   setHealth: (health) => set({ health }),
-  addConversation: (msg) => set((s) => ({ conversations: [...s.conversations, msg] })),
+  addConversation: (msg) => set((s) => ({ conversations: [...s.conversations, msg] })), // eslint-disable-line @typescript-eslint/no-explicit-any
   setConversations: (msgs) => set({ conversations: msgs }),
   setTasks: (tasks) => set({ tasks }),
   addTask: (task) => set((s) => ({ tasks: [...s.tasks, task] })),
@@ -71,5 +76,10 @@ export const useJarvisStore = create<JarvisStore>((set) => ({
   clearNotifications: () => set({ notifications: [] }),
   setSidebarOpen: (v) => set({ sidebarOpen: v }),
   setActiveSection: (section) => set({ activeSection: section }),
+  setSettings: (s) => set((state) => ({
+    ...state,
+    settings: { ...state.settings, ...s },
+    voiceSTT: s.voiceSTT !== undefined ? s.voiceSTT : state.voiceSTT,
+  })),
   reset: () => set(initialState),
 }));

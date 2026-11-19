@@ -1,0 +1,1853 @@
+{
+  "Material.002": {
+    "use_nodes": true,
+    "users": 1,
+    "diffuse_color": [
+      0.8,
+      0.8,
+      0.8,
+      1.0
+    ],
+    "metallic": 0.0,
+    "roughness": 0.4,
+    "blend_method": "HASHED",
+    "node_tree": {
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "ShaderNodeOutputMaterial",
+          "label": "",
+          "parent": null,
+          "location": [
+            1434.796387,
+            2235.702637
+          ],
+          "properties": {
+            "type": "OUTPUT_MATERIAL",
+            "location_absolute": [
+              1434.796387,
+              2235.702637
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "OUTPUT",
+            "bl_idname": "ShaderNodeOutputMaterial",
+            "bl_label": "Material Output",
+            "bl_description": "Output surface material information for use in rendering",
+            "bl_icon": "NONE",
+            "bl_static_type": "OUTPUT_MATERIAL",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "target": "ALL"
+          },
+          "inputs": {
+            "Surface": {
+              "name": "Surface",
+              "linked": true,
+              "value": null
+            },
+            "Volume": {
+              "name": "Volume",
+              "linked": false,
+              "value": null
+            },
+            "Displacement": {
+              "name": "Displacement",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Thickness": {
+              "name": "Thickness",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "ShaderNodeTexNoise",
+          "label": "",
+          "parent": null,
+          "location": [
+            -367.905457,
+            252.698532
+          ],
+          "properties": {
+            "type": "TEX_NOISE",
+            "location_absolute": [
+              -367.905457,
+              252.698532
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "TEXTURE",
+            "bl_idname": "ShaderNodeTexNoise",
+            "bl_label": "Noise Texture",
+            "bl_description": "Generate fractal Perlin noise",
+            "bl_icon": "NONE",
+            "bl_static_type": "TEX_NOISE",
+            "bl_width_default": 160.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "noise_dimensions": "3D",
+            "noise_type": "FBM",
+            "normalize": true
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "W": {
+              "name": "W",
+              "linked": false,
+              "value": 0.0
+            },
+            "Scale": {
+              "name": "Scale",
+              "linked": false,
+              "value": 5.0
+            },
+            "Detail": {
+              "name": "Detail",
+              "linked": false,
+              "value": 2.0
+            },
+            "Roughness": {
+              "name": "Roughness",
+              "linked": false,
+              "value": 0.5
+            },
+            "Lacunarity": {
+              "name": "Lacunarity",
+              "linked": false,
+              "value": 2.0
+            },
+            "Offset": {
+              "name": "Offset",
+              "linked": false,
+              "value": 0.0
+            },
+            "Gain": {
+              "name": "Gain",
+              "linked": false,
+              "value": 1.0
+            },
+            "Distortion": {
+              "name": "Distortion",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Emission",
+          "type": "ShaderNodeEmission",
+          "label": "",
+          "parent": null,
+          "location": [
+            4.077783,
+            254.635529
+          ],
+          "properties": {
+            "type": "EMISSION",
+            "location_absolute": [
+              4.077783,
+              254.635529
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeEmission",
+            "bl_label": "Emission",
+            "bl_description": "Lambertian emission shader",
+            "bl_icon": "NONE",
+            "bl_static_type": "EMISSION",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                0.032391,
+                0.519247,
+                1.0,
+                1.0
+              ]
+            },
+            "Strength": {
+              "name": "Strength",
+              "linked": true,
+              "value": 1.0
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Math",
+          "type": "ShaderNodeMath",
+          "label": "",
+          "parent": null,
+          "location": [
+            -179.007721,
+            253.667023
+          ],
+          "properties": {
+            "type": "MATH",
+            "location_absolute": [
+              -179.007721,
+              253.667023
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeMath",
+            "bl_label": "Math",
+            "bl_description": "Perform math operations",
+            "bl_icon": "NONE",
+            "bl_static_type": "MATH",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "operation": "ADD",
+            "use_clamp": false
+          },
+          "inputs": {
+            "Value": {
+              "name": "Value",
+              "linked": false,
+              "value": 5.0
+            },
+            "Value_001": {
+              "name": "Value",
+              "linked": true,
+              "value": 0.5
+            },
+            "Value_002": {
+              "name": "Value",
+              "linked": false,
+              "value": 0.5
+            }
+          }
+        },
+        {
+          "name": "Transparent BSDF",
+          "type": "ShaderNodeBsdfTransparent",
+          "label": "",
+          "parent": null,
+          "location": [
+            -0.225673,
+            366.209564
+          ],
+          "properties": {
+            "type": "BSDF_TRANSPARENT",
+            "location_absolute": [
+              -0.225673,
+              366.209564
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeBsdfTransparent",
+            "bl_label": "Transparent BSDF",
+            "bl_description": "Transparency without refraction, passing straight through the surface as if there were no geometry",
+            "bl_icon": "NONE",
+            "bl_static_type": "BSDF_TRANSPARENT",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                0.006703,
+                1.0,
+                0.002061,
+                1.0
+              ]
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Mix Shader",
+          "type": "ShaderNodeMixShader",
+          "label": "",
+          "parent": null,
+          "location": [
+            247.053986,
+            556.429565
+          ],
+          "properties": {
+            "type": "MIX_SHADER",
+            "location_absolute": [
+              247.053986,
+              556.429565
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeMixShader",
+            "bl_label": "Mix Shader",
+            "bl_description": "Mix two shaders together. Typically used for material layering",
+            "bl_icon": "NONE",
+            "bl_static_type": "MIX_SHADER",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            },
+            "Shader": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            },
+            "Shader_001": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            }
+          }
+        },
+        {
+          "name": "Texture Coordinate",
+          "type": "ShaderNodeTexCoord",
+          "label": "",
+          "parent": null,
+          "location": [
+            -461.309174,
+            601.117798
+          ],
+          "properties": {
+            "type": "TEX_COORD",
+            "location_absolute": [
+              -461.309174,
+              601.117798
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeTexCoord",
+            "bl_label": "Texture Coordinate",
+            "bl_description": "Retrieve multiple types of texture coordinates.\nTypically used as inputs for texture nodes",
+            "bl_icon": "NONE",
+            "bl_static_type": "TEX_COORD",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "from_instancer": false
+          },
+          "inputs": {}
+        },
+        {
+          "name": "Separate XYZ",
+          "type": "ShaderNodeSeparateXYZ",
+          "label": "",
+          "parent": null,
+          "location": [
+            -286.926117,
+            599.55188
+          ],
+          "properties": {
+            "type": "SEPXYZ",
+            "location_absolute": [
+              -286.926117,
+              599.55188
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeSeparateXYZ",
+            "bl_label": "Separate XYZ",
+            "bl_description": "Split a vector into its X, Y, and Z components",
+            "bl_icon": "NONE",
+            "bl_static_type": "SEPXYZ",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": true,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "name": "Color Ramp",
+          "type": "ShaderNodeValToRGB",
+          "label": "",
+          "parent": null,
+          "location": [
+            -102.326134,
+            596.121155
+          ],
+          "properties": {
+            "type": "VALTORGB",
+            "location_absolute": [
+              -102.326134,
+              596.121155
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeValToRGB",
+            "bl_label": "Color Ramp",
+            "bl_description": "Map values to colors with the use of a gradient",
+            "bl_icon": "NONE",
+            "bl_static_type": "VALTORGB",
+            "bl_width_default": 240.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            }
+          },
+          "color_ramp": [
+            {
+              "pos": 0.6,
+              "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "pos": 1.0,
+              "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Mix Shader.001",
+          "type": "ShaderNodeMixShader",
+          "label": "",
+          "parent": null,
+          "location": [
+            555.932556,
+            953.371887
+          ],
+          "properties": {
+            "type": "MIX_SHADER",
+            "location_absolute": [
+              555.932556,
+              953.371887
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeMixShader",
+            "bl_label": "Mix Shader",
+            "bl_description": "Mix two shaders together. Typically used for material layering",
+            "bl_icon": "NONE",
+            "bl_static_type": "MIX_SHADER",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            },
+            "Shader": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            },
+            "Shader_001": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            }
+          }
+        },
+        {
+          "name": "Emission.001",
+          "type": "ShaderNodeEmission",
+          "label": "",
+          "parent": null,
+          "location": [
+            286.542145,
+            907.629517
+          ],
+          "properties": {
+            "type": "EMISSION",
+            "location_absolute": [
+              286.542145,
+              907.629517
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeEmission",
+            "bl_label": "Emission",
+            "bl_description": "Lambertian emission shader",
+            "bl_icon": "NONE",
+            "bl_static_type": "EMISSION",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                1.0,
+                0.624397,
+                0.095324,
+                1.0
+              ]
+            },
+            "Strength": {
+              "name": "Strength",
+              "linked": false,
+              "value": 1.0
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Geometry",
+          "type": "ShaderNodeNewGeometry",
+          "label": "",
+          "parent": null,
+          "location": [
+            -251.444183,
+            1001.10968
+          ],
+          "properties": {
+            "type": "NEW_GEOMETRY",
+            "location_absolute": [
+              -251.444183,
+              1001.10968
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeNewGeometry",
+            "bl_label": "Geometry",
+            "bl_description": "Retrieve geometric information about the current shading point",
+            "bl_icon": "NONE",
+            "bl_static_type": "NEW_GEOMETRY",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {}
+        },
+        {
+          "name": "Color Ramp.001",
+          "type": "ShaderNodeValToRGB",
+          "label": "",
+          "parent": null,
+          "location": [
+            138.496536,
+            1199.360352
+          ],
+          "properties": {
+            "type": "VALTORGB",
+            "location_absolute": [
+              138.496536,
+              1199.360352
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeValToRGB",
+            "bl_label": "Color Ramp",
+            "bl_description": "Map values to colors with the use of a gradient",
+            "bl_icon": "NONE",
+            "bl_static_type": "VALTORGB",
+            "bl_width_default": 240.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            }
+          },
+          "color_ramp": [
+            {
+              "pos": 0.170909,
+              "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "pos": 1.0,
+              "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Layer Weight",
+          "type": "ShaderNodeLayerWeight",
+          "label": "",
+          "parent": null,
+          "location": [
+            -68.842506,
+            983.912231
+          ],
+          "properties": {
+            "type": "LAYER_WEIGHT",
+            "location_absolute": [
+              -68.842506,
+              983.912231
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeLayerWeight",
+            "bl_label": "Layer Weight",
+            "bl_description": "Produce a blending factor depending on the angle between the surface normal and the view direction.\nTypically used for layering shaders with the Mix Shader node",
+            "bl_icon": "NONE",
+            "bl_static_type": "LAYER_WEIGHT",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Blend": {
+              "name": "Blend",
+              "linked": false,
+              "value": 0.5
+            },
+            "Normal": {
+              "name": "Normal",
+              "linked": true,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mix Shader.002",
+          "type": "ShaderNodeMixShader",
+          "label": "",
+          "parent": null,
+          "location": [
+            966.147766,
+            1596.936768
+          ],
+          "properties": {
+            "type": "MIX_SHADER",
+            "location_absolute": [
+              966.147766,
+              1596.936768
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeMixShader",
+            "bl_label": "Mix Shader",
+            "bl_description": "Mix two shaders together. Typically used for material layering",
+            "bl_icon": "NONE",
+            "bl_static_type": "MIX_SHADER",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            },
+            "Shader": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            },
+            "Shader_001": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            }
+          }
+        },
+        {
+          "name": "Bevel",
+          "type": "ShaderNodeBevel",
+          "label": "",
+          "parent": null,
+          "location": [
+            -8.79143,
+            1774.370117
+          ],
+          "properties": {
+            "type": "BEVEL",
+            "location_absolute": [
+              -8.79143,
+              1774.370117
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeBevel",
+            "bl_label": "Bevel",
+            "bl_description": "Generates normals with round corners.\nNote: only supported in Cycles, and may slow down renders",
+            "bl_icon": "NONE",
+            "bl_static_type": "BEVEL",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "samples": 7
+          },
+          "inputs": {
+            "Radius": {
+              "name": "Radius",
+              "linked": false,
+              "value": 0.0
+            },
+            "Normal": {
+              "name": "Normal",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "name": "Geometry.001",
+          "type": "ShaderNodeNewGeometry",
+          "label": "",
+          "parent": null,
+          "location": [
+            -7.468213,
+            1647.37207
+          ],
+          "properties": {
+            "type": "NEW_GEOMETRY",
+            "location_absolute": [
+              -7.468213,
+              1647.37207
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeNewGeometry",
+            "bl_label": "Geometry",
+            "bl_description": "Retrieve geometric information about the current shading point",
+            "bl_icon": "NONE",
+            "bl_static_type": "NEW_GEOMETRY",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {}
+        },
+        {
+          "name": "Vector Math",
+          "type": "ShaderNodeVectorMath",
+          "label": "",
+          "parent": null,
+          "location": [
+            217.388092,
+            1767.755615
+          ],
+          "properties": {
+            "type": "VECT_MATH",
+            "location_absolute": [
+              217.388092,
+              1767.755615
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "VECTOR",
+            "bl_idname": "ShaderNodeVectorMath",
+            "bl_label": "Vector Math",
+            "bl_description": "Perform vector math operation",
+            "bl_icon": "NONE",
+            "bl_static_type": "VECT_MATH",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "operation": "ADD"
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": true,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Vector_001": {
+              "name": "Vector",
+              "linked": true,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Vector_002": {
+              "name": "Vector",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Scale": {
+              "name": "Scale",
+              "linked": false,
+              "value": 1.0
+            }
+          }
+        },
+        {
+          "name": "Color Ramp.002",
+          "type": "ShaderNodeValToRGB",
+          "label": "",
+          "parent": null,
+          "location": [
+            395.088043,
+            1726.047485
+          ],
+          "properties": {
+            "type": "VALTORGB",
+            "location_absolute": [
+              395.088043,
+              1726.047485
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeValToRGB",
+            "bl_label": "Color Ramp",
+            "bl_description": "Map values to colors with the use of a gradient",
+            "bl_icon": "NONE",
+            "bl_static_type": "VALTORGB",
+            "bl_width_default": 240.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            }
+          },
+          "color_ramp": [
+            {
+              "pos": 0.29091,
+              "color": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "pos": 1.0,
+              "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Emission.002",
+          "type": "ShaderNodeEmission",
+          "label": "",
+          "parent": null,
+          "location": [
+            693.345947,
+            1530.743164
+          ],
+          "properties": {
+            "type": "EMISSION",
+            "location_absolute": [
+              693.345947,
+              1530.743164
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeEmission",
+            "bl_label": "Emission",
+            "bl_description": "Lambertian emission shader",
+            "bl_icon": "NONE",
+            "bl_static_type": "EMISSION",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                0.045225,
+                0.483381,
+                0.888688,
+                1.0
+              ]
+            },
+            "Strength": {
+              "name": "Strength",
+              "linked": false,
+              "value": 2.0
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Mix Shader.003",
+          "type": "ShaderNodeMixShader",
+          "label": "",
+          "parent": null,
+          "location": [
+            1225.357788,
+            2205.274902
+          ],
+          "properties": {
+            "type": "MIX_SHADER",
+            "location_absolute": [
+              1225.357788,
+              2205.274902
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeMixShader",
+            "bl_label": "Mix Shader",
+            "bl_description": "Mix two shaders together. Typically used for material layering",
+            "bl_icon": "NONE",
+            "bl_static_type": "MIX_SHADER",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            },
+            "Shader": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            },
+            "Shader_001": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            }
+          }
+        },
+        {
+          "name": "Wave Texture",
+          "type": "ShaderNodeTexWave",
+          "label": "",
+          "parent": null,
+          "location": [
+            690.339478,
+            2257.32666
+          ],
+          "properties": {
+            "type": "TEX_WAVE",
+            "location_absolute": [
+              690.339478,
+              2257.32666
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "TEXTURE",
+            "bl_idname": "ShaderNodeTexWave",
+            "bl_label": "Wave Texture",
+            "bl_description": "Generate procedural bands or rings with noise",
+            "bl_icon": "NONE",
+            "bl_static_type": "TEX_WAVE",
+            "bl_width_default": 160.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "wave_type": "BANDS",
+            "bands_direction": "Z",
+            "rings_direction": "X",
+            "wave_profile": "TRI"
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Scale": {
+              "name": "Scale",
+              "linked": false,
+              "value": 20.0
+            },
+            "Distortion": {
+              "name": "Distortion",
+              "linked": false,
+              "value": 4.599999
+            },
+            "Detail": {
+              "name": "Detail",
+              "linked": false,
+              "value": 50.0
+            },
+            "Detail Scale": {
+              "name": "Detail Scale",
+              "linked": false,
+              "value": 68.099991
+            },
+            "Detail Roughness": {
+              "name": "Detail Roughness",
+              "linked": false,
+              "value": 0.785714
+            },
+            "Phase Offset": {
+              "name": "Phase Offset",
+              "linked": false,
+              "value": -21.699999
+            }
+          }
+        },
+        {
+          "name": "Transparent BSDF.001",
+          "type": "ShaderNodeBsdfTransparent",
+          "label": "",
+          "parent": null,
+          "location": [
+            939.579407,
+            2050.471924
+          ],
+          "properties": {
+            "type": "BSDF_TRANSPARENT",
+            "location_absolute": [
+              939.579407,
+              2050.471924
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeBsdfTransparent",
+            "bl_label": "Transparent BSDF",
+            "bl_description": "Transparency without refraction, passing straight through the surface as if there were no geometry",
+            "bl_icon": "NONE",
+            "bl_static_type": "BSDF_TRANSPARENT",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        }
+      ],
+      "links": [
+        {
+          "from_node": "Noise Texture",
+          "from_socket": "Fac",
+          "to_node": "Math",
+          "to_socket": "Value_001"
+        },
+        {
+          "from_node": "Math",
+          "from_socket": "Value",
+          "to_node": "Emission",
+          "to_socket": "Strength"
+        },
+        {
+          "from_node": "Mix Shader.003",
+          "from_socket": "Shader",
+          "to_node": "Material Output",
+          "to_socket": "Surface"
+        },
+        {
+          "from_node": "Emission",
+          "from_socket": "Emission",
+          "to_node": "Mix Shader",
+          "to_socket": "Shader_001"
+        },
+        {
+          "from_node": "Transparent BSDF",
+          "from_socket": "BSDF",
+          "to_node": "Mix Shader",
+          "to_socket": "Shader"
+        },
+        {
+          "from_node": "Texture Coordinate",
+          "from_socket": "Generated",
+          "to_node": "Separate XYZ",
+          "to_socket": "Vector"
+        },
+        {
+          "from_node": "Separate XYZ",
+          "from_socket": "Z",
+          "to_node": "Color Ramp",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Color Ramp",
+          "from_socket": "Color",
+          "to_node": "Mix Shader",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Geometry",
+          "from_socket": "True Normal",
+          "to_node": "Layer Weight",
+          "to_socket": "Normal"
+        },
+        {
+          "from_node": "Layer Weight",
+          "from_socket": "Facing",
+          "to_node": "Color Ramp.001",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Mix Shader",
+          "from_socket": "Shader",
+          "to_node": "Mix Shader.001",
+          "to_socket": "Shader_001"
+        },
+        {
+          "from_node": "Color Ramp.001",
+          "from_socket": "Color",
+          "to_node": "Mix Shader.001",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Emission.001",
+          "from_socket": "Emission",
+          "to_node": "Mix Shader.001",
+          "to_socket": "Shader"
+        },
+        {
+          "from_node": "Mix Shader.001",
+          "from_socket": "Shader",
+          "to_node": "Mix Shader.002",
+          "to_socket": "Shader_001"
+        },
+        {
+          "from_node": "Emission.002",
+          "from_socket": "Emission",
+          "to_node": "Mix Shader.002",
+          "to_socket": "Shader"
+        },
+        {
+          "from_node": "Color Ramp.002",
+          "from_socket": "Color",
+          "to_node": "Mix Shader.002",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Bevel",
+          "from_socket": "Normal",
+          "to_node": "Vector Math",
+          "to_socket": "Vector"
+        },
+        {
+          "from_node": "Geometry.001",
+          "from_socket": "True Normal",
+          "to_node": "Vector Math",
+          "to_socket": "Vector_001"
+        },
+        {
+          "from_node": "Vector Math",
+          "from_socket": "Vector",
+          "to_node": "Color Ramp.002",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Mix Shader.002",
+          "from_socket": "Shader",
+          "to_node": "Mix Shader.003",
+          "to_socket": "Shader_001"
+        },
+        {
+          "from_node": "Transparent BSDF.001",
+          "from_socket": "BSDF",
+          "to_node": "Mix Shader.003",
+          "to_socket": "Shader"
+        },
+        {
+          "from_node": "Wave Texture",
+          "from_socket": "Color",
+          "to_node": "Mix Shader.003",
+          "to_socket": "Fac"
+        }
+      ]
+    }
+  },
+  "Material.004": {
+    "use_nodes": true,
+    "users": 1,
+    "diffuse_color": [
+      0.8,
+      0.8,
+      0.8,
+      1.0
+    ],
+    "metallic": 0.0,
+    "roughness": 0.4,
+    "blend_method": "HASHED",
+    "node_tree": {
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "ShaderNodeOutputMaterial",
+          "label": "",
+          "parent": null,
+          "location": [
+            584.959534,
+            534.507507
+          ],
+          "properties": {
+            "type": "OUTPUT_MATERIAL",
+            "location_absolute": [
+              584.959534,
+              534.507507
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "OUTPUT",
+            "bl_idname": "ShaderNodeOutputMaterial",
+            "bl_label": "Material Output",
+            "bl_description": "Output surface material information for use in rendering",
+            "bl_icon": "NONE",
+            "bl_static_type": "OUTPUT_MATERIAL",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "target": "ALL"
+          },
+          "inputs": {
+            "Surface": {
+              "name": "Surface",
+              "linked": true,
+              "value": null
+            },
+            "Volume": {
+              "name": "Volume",
+              "linked": false,
+              "value": null
+            },
+            "Displacement": {
+              "name": "Displacement",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Thickness": {
+              "name": "Thickness",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Emission",
+          "type": "ShaderNodeEmission",
+          "label": "",
+          "parent": null,
+          "location": [
+            -14.04624,
+            107.501343
+          ],
+          "properties": {
+            "type": "EMISSION",
+            "location_absolute": [
+              -14.04624,
+              107.501343
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeEmission",
+            "bl_label": "Emission",
+            "bl_description": "Lambertian emission shader",
+            "bl_icon": "NONE",
+            "bl_static_type": "EMISSION",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                0.002414,
+                1.0,
+                0.0,
+                1.0
+              ]
+            },
+            "Strength": {
+              "name": "Strength",
+              "linked": true,
+              "value": 1.0
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Math",
+          "type": "ShaderNodeMath",
+          "label": "",
+          "parent": null,
+          "location": [
+            -194.225647,
+            126.870972
+          ],
+          "properties": {
+            "type": "MATH",
+            "location_absolute": [
+              -194.225647,
+              126.870972
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeMath",
+            "bl_label": "Math",
+            "bl_description": "Perform math operations",
+            "bl_icon": "NONE",
+            "bl_static_type": "MATH",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "operation": "ADD",
+            "use_clamp": false
+          },
+          "inputs": {
+            "Value": {
+              "name": "Value",
+              "linked": false,
+              "value": 1.4
+            },
+            "Value_001": {
+              "name": "Value",
+              "linked": true,
+              "value": 0.5
+            },
+            "Value_002": {
+              "name": "Value",
+              "linked": false,
+              "value": 0.5
+            }
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "ShaderNodeTexNoise",
+          "label": "",
+          "parent": null,
+          "location": [
+            -408.309753,
+            128.807892
+          ],
+          "properties": {
+            "type": "TEX_NOISE",
+            "location_absolute": [
+              -408.309753,
+              128.807892
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "TEXTURE",
+            "bl_idname": "ShaderNodeTexNoise",
+            "bl_label": "Noise Texture",
+            "bl_description": "Generate fractal Perlin noise",
+            "bl_icon": "NONE",
+            "bl_static_type": "TEX_NOISE",
+            "bl_width_default": 160.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "noise_dimensions": "3D",
+            "noise_type": "FBM",
+            "normalize": true
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": false,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "W": {
+              "name": "W",
+              "linked": false,
+              "value": 0.0
+            },
+            "Scale": {
+              "name": "Scale",
+              "linked": false,
+              "value": 5.0
+            },
+            "Detail": {
+              "name": "Detail",
+              "linked": false,
+              "value": 2.0
+            },
+            "Roughness": {
+              "name": "Roughness",
+              "linked": false,
+              "value": 0.5
+            },
+            "Lacunarity": {
+              "name": "Lacunarity",
+              "linked": false,
+              "value": 2.0
+            },
+            "Offset": {
+              "name": "Offset",
+              "linked": false,
+              "value": 0.0
+            },
+            "Gain": {
+              "name": "Gain",
+              "linked": false,
+              "value": 1.0
+            },
+            "Distortion": {
+              "name": "Distortion",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Mix Shader",
+          "type": "ShaderNodeMixShader",
+          "label": "",
+          "parent": null,
+          "location": [
+            317.451294,
+            481.010071
+          ],
+          "properties": {
+            "type": "MIX_SHADER",
+            "location_absolute": [
+              317.451294,
+              481.010071
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeMixShader",
+            "bl_label": "Mix Shader",
+            "bl_description": "Mix two shaders together. Typically used for material layering",
+            "bl_icon": "NONE",
+            "bl_static_type": "MIX_SHADER",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            },
+            "Shader": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            },
+            "Shader_001": {
+              "name": "Shader",
+              "linked": true,
+              "value": null
+            }
+          }
+        },
+        {
+          "name": "Transparent BSDF",
+          "type": "ShaderNodeBsdfTransparent",
+          "label": "",
+          "parent": null,
+          "location": [
+            49.958504,
+            440.970459
+          ],
+          "properties": {
+            "type": "BSDF_TRANSPARENT",
+            "location_absolute": [
+              49.958504,
+              440.970459
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "SHADER",
+            "bl_idname": "ShaderNodeBsdfTransparent",
+            "bl_label": "Transparent BSDF",
+            "bl_description": "Transparency without refraction, passing straight through the surface as if there were no geometry",
+            "bl_icon": "NONE",
+            "bl_static_type": "BSDF_TRANSPARENT",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Color": {
+              "name": "Color",
+              "linked": false,
+              "value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Weight": {
+              "name": "Weight",
+              "linked": false,
+              "value": 0.0
+            }
+          }
+        },
+        {
+          "name": "Texture Coordinate",
+          "type": "ShaderNodeTexCoord",
+          "label": "",
+          "parent": null,
+          "location": [
+            -440.154602,
+            522.636963
+          ],
+          "properties": {
+            "type": "TEX_COORD",
+            "location_absolute": [
+              -440.154602,
+              522.636963
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "INPUT",
+            "bl_idname": "ShaderNodeTexCoord",
+            "bl_label": "Texture Coordinate",
+            "bl_description": "Retrieve multiple types of texture coordinates.\nTypically used as inputs for texture nodes",
+            "bl_icon": "NONE",
+            "bl_static_type": "TEX_COORD",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38,
+            "from_instancer": false
+          },
+          "inputs": {}
+        },
+        {
+          "name": "Separate XYZ",
+          "type": "ShaderNodeSeparateXYZ",
+          "label": "",
+          "parent": null,
+          "location": [
+            -230.26738,
+            618.961548
+          ],
+          "properties": {
+            "type": "SEPXYZ",
+            "location_absolute": [
+              -230.26738,
+              618.961548
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeSeparateXYZ",
+            "bl_label": "Separate XYZ",
+            "bl_description": "Split a vector into its X, Y, and Z components",
+            "bl_icon": "NONE",
+            "bl_static_type": "SEPXYZ",
+            "bl_width_default": 140.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Vector": {
+              "name": "Vector",
+              "linked": true,
+              "value": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "name": "Color Ramp",
+          "type": "ShaderNodeValToRGB",
+          "label": "",
+          "parent": null,
+          "location": [
+            -44.904152,
+            755.072327
+          ],
+          "properties": {
+            "type": "VALTORGB",
+            "location_absolute": [
+              -44.904152,
+              755.072327
+            ],
+            "warning_propagation": "ALL",
+            "color_tag": "CONVERTER",
+            "bl_idname": "ShaderNodeValToRGB",
+            "bl_label": "Color Ramp",
+            "bl_description": "Map values to colors with the use of a gradient",
+            "bl_icon": "NONE",
+            "bl_static_type": "VALTORGB",
+            "bl_width_default": 240.0,
+            "bl_width_min": 100.0,
+            "bl_width_max": 700.0,
+            "bl_height_default": 100.0,
+            "bl_height_min": 30.0,
+            "bl_height_max": 3.4028234663852886e+38
+          },
+          "inputs": {
+            "Fac": {
+              "name": "Factor",
+              "linked": true,
+              "value": 0.5
+            }
+          },
+          "color_ramp": [
+            {
+              "pos": 0.0,
+              "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            {
+              "pos": 1.0,
+              "color": [
+                0.922013,
+                0.84772,
+                1.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "from_node": "Mix Shader",
+          "from_socket": "Shader",
+          "to_node": "Material Output",
+          "to_socket": "Surface"
+        },
+        {
+          "from_node": "Math",
+          "from_socket": "Value",
+          "to_node": "Emission",
+          "to_socket": "Strength"
+        },
+        {
+          "from_node": "Noise Texture",
+          "from_socket": "Fac",
+          "to_node": "Math",
+          "to_socket": "Value_001"
+        },
+        {
+          "from_node": "Texture Coordinate",
+          "from_socket": "Generated",
+          "to_node": "Separate XYZ",
+          "to_socket": "Vector"
+        },
+        {
+          "from_node": "Separate XYZ",
+          "from_socket": "Z",
+          "to_node": "Color Ramp",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Color Ramp",
+          "from_socket": "Color",
+          "to_node": "Mix Shader",
+          "to_socket": "Fac"
+        },
+        {
+          "from_node": "Emission",
+          "from_socket": "Emission",
+          "to_node": "Mix Shader",
+          "to_socket": "Shader_001"
+        },
+        {
+          "from_node": "Transparent BSDF",
+          "from_socket": "BSDF",
+          "to_node": "Mix Shader",
+          "to_socket": "Shader"
+        }
+      ]
+    }
+  }
+}

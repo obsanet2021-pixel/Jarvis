@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
+import { registerHandlers } from './karionBridge'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -20,6 +21,8 @@ function createWindow() {
   })
 
   const isDev = process.env.NODE_ENV === 'development'
+  // Initialize Firebase Admin SDK (loads config from userData on first call)
+  registerHandlers(mainWindow)
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:5174')

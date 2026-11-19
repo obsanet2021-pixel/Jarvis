@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const path_1 = __importDefault(require("path"));
+const child_process_1 = require("child_process");
 let mainWindow = null;
+let backendProcess = null;
 function createWindow() {
     mainWindow = new electron_1.BrowserWindow({
         width: 1400,
@@ -61,6 +63,48 @@ electron_1.app.on('window-all-closed', () => {
     if (process.platform !== 'darwin')
         electron_1.app.quit();
 });
-electron_1.ipcMain.on('ping', () => {
-    console.log('IPC ping received');
+electron_1.ipcMain.handle('ping', () => 'pong');
+electron_1.ipcMain.handle('api-keys-updated', (_event, keys) => {
+    console.log('[IPC] API keys updated:', Object.keys(keys));
+    return { success: true };
+});
+electron_1.ipcMain.handle('backend:launch', async () => {
+    if (backendProcess) {
+        console.log('[IPC] Backend already running');
+        return { success: true, message: 'Backend already running' };
+    }
+    try {
+        const projectRoot = path_1.default.join(__dirname, '..');
+        const scriptPath = path_1.default.join(projectRoot, 'api', 'main.py');
+        backendProcess = child_process_1.spawn('python', [scriptPath], {
+            cwd: projectRoot,
+            detached: false,
+            stdio: 'ignore',
+        });
+        backendProcess.on('error', (err) => {
+            console.error('[IPC] Failed to start backend:', err.message);
+            backendProcess = null;
+        });
+        backendProcess.unref();
+        mainWindow?.webContents.send('backend:status', 'running');
+        console.log('[IPC] Backend process started');
+        return { success: true, message: 'Backend launched successfully' };
+    } catch (err) {
+        console.error('[IPC] Backend launch error:', err);
+        return { success: false, message: err.message };
+    }
+});
+electron_1.ipcMain.handle('backend:stop', () => {
+    if (backendProcess) {
+        backendProcess.kill();
+        backendProcess = null;
+        mainWindow?.webContents.send('backend:status', 'stopped');
+        console.log('[IPC] Backend process stopped');
+        return { success: true, message: 'Backend stopped' };
+    }
+    return { success: false, message: 'Backend not running' };
+});
+electron_1.ipcMain.handle('backend:is-running', () => {
+    const isRunning = backendProcess !== null && !backendProcess.killed;
+    return { running: isRunning };
 });

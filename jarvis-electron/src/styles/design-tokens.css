@@ -1,0 +1,33 @@
+/* Design Tokens — KARION Command Interface v2 */
+:root {
+  /* Core palette */
+  --bg:#050b12;
+  --panel:#091521;
+  --panel2:#0b1b29;
+  --line:rgba(79,193,225,.17);
+  --line2:rgba(79,193,225,.34);
+  --cyan:#63e6ff;
+  --ice:#cceef6;
+  --muted:#72909f;
+  --dim:#405c6b;
+  --amber:#ffb86a;
+  --green:#7bf2c1;
+  --red:#ff6b6b;
+  --surface:rgba(6,17,27,.92);
+  --surface-2:rgba(11,28,42,.92);
+
+  /* Typography */
+  --font:'Space Grotesk',sans-serif;
+  --display:'Barlow Condensed',sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%; width: 100%; overflow: hidden;
+  background: radial-gradient(ellipse at 67% 22%,rgba(12,67,88,.22),transparent 42%),
+              linear-gradient(130deg,#050b12,#07121d 58%,#050c14);
+  color: var(--ice);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
