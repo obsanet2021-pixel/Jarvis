@@ -10,3 +10,15 @@ electron_1.contextBridge.exposeInMainWorld('jarvisAPI', {
     },
     send: (channel, ...args) => electron_1.ipcRenderer.send(channel, ...args),
 });
+
+// Backend management helpers
+electron_1.contextBridge.exposeInMainWorld('jarvisBackend', {
+    launchBackend: () => electron_1.ipcRenderer.invoke('backend:launch'),
+    stopBackend: () => electron_1.ipcRenderer.invoke('backend:stop'),
+    isRunning: () => electron_1.ipcRenderer.invoke('backend:is-running'),
+    onStatusChange: (callback) => {
+        const handler = (_event, status) => callback(status);
+        electron_1.ipcRenderer.on('backend:status', handler);
+        return () => electron_1.ipcRenderer.removeListener('backend:status', handler);
+    },
+});

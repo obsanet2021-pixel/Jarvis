@@ -1,5 +1,3 @@
-const API_BASE = 'http://localhost:8000'
-
 import {
   BackendHealth,
   SIMsConfig,
@@ -7,6 +5,17 @@ import {
   BalanceResult,
   SystemStatus,
 } from '../types'
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:31415'
+const API_KEY_STORAGE_KEY = 'jarvis_llm_api_key'
+
+function loadApiKey(): string {
+  try {
+    return localStorage.getItem(API_KEY_STORAGE_KEY) || ''
+  } catch {
+    return ''
+  }
+}
 
 interface VoiceProcessResult {
   success: boolean
@@ -25,12 +34,17 @@ interface VoiceStatus {
 export class JarvisAPI {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE}${endpoint}`
+    const apiKey = loadApiKey()
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string>),
+    }
+    if (apiKey) {
+      headers['Authorization'] = `Bearer ${apiKey}`
+    }
     const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
       ...options,
+      headers,
     })
 
     if (!response.ok) {
@@ -85,10 +99,10 @@ export class JarvisAPI {
   // ── Voice Commands ─────────────────────────────────────────────────────────
 
   /** Send a text command through the voice command processor and get a response. */
-  async processVoiceCommand(text: string): Promise<VoiceProcessResult> {
+  async processVoiceCommand(text: string, tools?: any[]): Promise<VoiceProcessResult> {
     return this.request<VoiceProcessResult>('/voice/process', {
       method: 'POST',
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, tools }),
     })
   }
 

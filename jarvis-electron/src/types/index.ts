@@ -87,7 +87,11 @@ export interface Notification {
   read: boolean;
 }
 
-export interface JarvisState {
+export interface PersistedSettings {
+  voiceSTT: boolean;
+}
+
+export interface JarvisState extends PersistedSettings {
   hologramState: HologramState;
   isListening: boolean;
   isSpeaking: boolean;
@@ -102,6 +106,11 @@ export interface JarvisState {
   notifications: Notification[];
   sidebarOpen: boolean;
   activeSection: string;
+  settings: PersistedSettings;
 }
 
-export type NavSection = 'home' | 'conversations' | 'tasks' | 'agents' | 'memory' | 'devices' | 'integrations' | 'activity' | 'settings';
+export type NavSection = 'home' | 'conversations' | 'tasks' | 'agents' | 'memory' | 'devices' | 'integrations' | 'activity' | 'settings' | 'mobile-bridge';
+export interface KarionState {
+  connected: boolean
+  pairing: { uid: string; deviceName: string } | null
+}

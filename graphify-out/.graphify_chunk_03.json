@@ -1,0 +1,643 @@
+{
+  "entities": {
+    "JarvisBrain": {
+      "entity_type": "CoreComponent",
+      "description": "The central AI orchestration and management system for Jarvis.",
+      "attributes": {
+        "responsibilities": [
+          "AI orchestration",
+          "Model/provider management",
+          "Persistent memory",
+          "User identity and authentication",
+          "Permission enforcement",
+          "Delegation policies",
+          "Task management",
+          "Background execution",
+          "Notifications",
+          "Device management",
+          "Tool and integration routing",
+          "Audit logging"
+        ]
+      },
+      "aliases": ["SharedJarvisBackend"]
+    },
+    "WindowsDesktopClient": {
+      "entity_type": "ClientApplication",
+      "description": "The Jarvis application running on Windows desktop, providing full AI conversation and computer-use capabilities.",
+      "attributes": {
+        "features": [
+          "Full AI conversation",
+          "Voice input and spoken responses",
+          "Windows computer-use agent",
+          "Actual mouse and keyboard control",
+          "Screen understanding",
+          "File and folder management",
+          "Browser automation",
+          "Application control",
+          "Gmail and Calendar integration",
+          "Telegram and messaging integrations",
+          "Cellular calls and USSD",
+          "Background tasks and scheduling",
+          "Persistent memory",
+          "Notifications and approval requests"
+        ]
+      },
+      "aliases": []
+    },
+    "AndroidApplication": {
+      "entity_type": "ClientApplication",
+      "description": "The Jarvis application running on Android devices, enabling AI voice/text conversations and remote Windows control.",
+      "attributes": {
+        "features": [
+          "AI voice conversations",
+          "Text conversations",
+          "Speech-to-text and text-to-speech",
+          "Shared Jarvis memory",
+          "Shared task history",
+          "Push notifications",
+          "Background task notifications",
+          "Approval requests",
+          "Task monitoring",
+          "Sending instructions to Windows computer",
+          "Receiving results and reports from Windows",
+          "Viewing Windows computer status",
+          "Accessing authorized Android capabilities",
+          "Using Android telephony and messaging capabilities"
+        ]
+      },
+      "aliases": []
+    },
+    "ComputerUseEngine": {
+      "entity_type": "Service",
+      "description": "Responsible for automating Windows desktop interactions, including visual perception and physical control.",
+      "attributes": {
+        "capabilities": [
+          "Desktop and application screenshot capture",
+          "Screen understanding using computer vision and OCR",
+          "Identifying UI elements (buttons, menus, text fields, icons, links)",
+          "Moving the actual Windows cursor",
+          "Left-click, right-click, double-click, and hover",
+          "Vertical and horizontal scrolling",
+          "Drag and drop",
+          "Keyboard input and shortcuts",
+          "Switching between applications",
+          "Opening websites, applications, and files",
+          "Observing and verifying the results of actions"
+        ],
+        "execution_modes": ["Visible Computer Use", "Background Computer Use"],
+        "security_considerations": [
+          "All actions must pass through central permission service",
+          "No direct access to sensitive operations",
+          "Clear user observation of computer-use activity",
+          "Emergency stop capability"
+        ]
+      },
+      "aliases": ["WindowsComputerControlEngine"]
+    },
+    "PermissionService": {
+      "entity_type": "Service",
+      "description": "Centralized service for enforcing permission policies across all Jarvis components and operations.",
+      "attributes": {
+        "operating_modes": [
+          "Autonomous Operations",
+          "Delegated Authority",
+          "Conditional Autonomy",
+          "Approval Required",
+          "Human-Only Authority"
+        ],
+        "enforcement_scope": [
+          "Windows computer-use engine",
+          "Android application",
+          "Roamies agent",
+          "Python telephony adapter",
+          "Gmail",
+          "Calendar",
+          "Browser automation",
+          "Messaging",
+          "Background tasks"
+        ]
+      },
+      "aliases": ["CentralPermissionService"]
+    },
+    "RoamiesAIOrchestrator": {
+      "entity_type": "ExternalIntegration",
+      "description": "An AI agent sidecar providing advanced AI orchestration, voice integration, persistent memory, and various integrations.",
+      "attributes": {
+        "integrated_capabilities": [
+          "AI agent orchestration",
+          "Voice integration (Fish Audio)",
+          "Persistent memory system",
+          "Windows automation (Tauri Rust backend)",
+          "Filesystem management",
+          "Task scheduling",
+          "Gmail API integration",
+          "Google Calendar API integration",
+          "Telegram integration",
+          "SMS abstraction"
+        ],
+        "license": "AGPL-3.0"
+      },
+      "aliases": ["RoamiesAgent"]
+    },
+    "PythonTelephonyAdapter": {
+      "entity_type": "Service",
+      "description": "Existing Python component for cellular communication and call management via Android ADB.",
+      "attributes": {
+        "features": [
+          "Direct dialing",
+          "Hang up functionality",
+          "Voice interaction during calls",
+          "Contact management",
+          "Safety controls (call confirmation)"
+        ]
+      },
+      "aliases": ["CellularCallingService"]
+    },
+    "USSDManager": {
+      "entity_type": "Service",
+      "description": "Existing Python component for managing USSD-based balance checks on Android devices.",
+      "attributes": {
+        "features": [
+          "Automatic network detection",
+          "Prefix-based routing",
+          "Manual overrides",
+          "Smart balance checking"
+        ]
+      },
+      "aliases": ["DualSIMBalanceManager"]
+    },
+    "FastAPIService": {
+      "entity_type": "Service",
+      "description": "The main orchestrator and API layer exposing core Jarvis services.",
+      "attributes": {
+        "base_url": "http://127.0.0.1:8765",
+        "security": ["Local Loopback Only", "Token Authentication", "Rate Limiting"],
+        "endpoints": [
+          "/health",
+          "/sims",
+          "/calls",
+          "/calls/hangup",
+          "/ussd/balance"
+        ],
+        "dependencies": ["uvicorn", "asyncio", "aiohttp"]
+      },
+      "aliases": ["MainOrchestratorAPI"]
+    },
+    "VoiceSpeechEngine": {
+      "entity_type": "CoreComponent",
+      "description": "Handles speech-to-text and text-to-speech for voice interactions.",
+      "attributes": {
+        "features": [
+          "Speech-to-text (STT)",
+          "Text-to-speech (TTS)",
+          "Voice activity detection",
+          "Noise reduction",
+          "Command keyword extraction and parsing",
+          "Multi-language support (future)"
+        ],
+        "technologies": ["Google Speech Recognition", "pyttsx3", "Fish Audio"]
+      },
+      "aliases": []
+    },
+    "PersistentMemory": {
+      "entity_type": "CoreComponent",
+      "description": "Stores conversation history, user preferences, and context across sessions.",
+      "attributes": {
+        "shared_components": [
+          "Conversation history",
+          "Persistent user preferences",
+          "Delegation policies",
+          "Task history",
+          "Pending tasks",
+          "Completed tasks",
+          "Pending approval requests",
+          "Connected integrations",
+          "Device information"
+        ]
+      },
+      "aliases": []
+    },
+    "HolographicInterface": {
+      "entity_type": "UserInterface",
+      "description": "A premium, futuristic holographic interface featuring a custom 3D hologram character.",
+      "attributes": {
+        "design_principles": [
+          "Dark, sophisticated environment",
+          "Cyan/blue holographic lighting",
+          "Subtle glow and visual enhancements",
+          "Carefully designed 3D camera angles",
+          "Minimal, futuristic UI"
+        ],
+        "rendering_engine": "Three.js / React Three Fiber",
+        "asset_format": "glTF 2.0 (.glb)",
+        "interactive_states": ["IDLE", "LISTENING", "THINKING", "SPEAKING", "WORKING"]
+      },
+      "aliases": []
+    }
+  },
+  "relationships": {
+    "JarvisBrainServesWindowsClient": {
+      "relationship_type": "SERVES",
+      "source": "JarvisBrain",
+      "target": "WindowsDesktopClient",
+      "description": "The Jarvis Brain provides core AI and backend services to the Windows Desktop Client.",
+      "strength": 0.9
+    },
+    "JarvisBrainServesAndroidApp": {
+      "relationship_type": "SERVES",
+      "source": "JarvisBrain",
+      "target": "AndroidApplication",
+      "description": "The Jarvis Brain provides core AI and backend services to the Android Application.",
+      "strength": 0.9
+    },
+    "WindowsClientUsesComputerEngine": {
+      "relationship_type": "USES",
+      "source": "WindowsDesktopClient",
+      "target": "ComputerUseEngine",
+      "description": "The Windows Desktop Client utilizes the Computer Use Engine for desktop automation.",
+      "strength": 0.8
+    },
+    "JarvisBrainEnforcesPermissions": {
+      "relationship_type": "ENFORCES",
+      "source": "JarvisBrain",
+      "target": "PermissionService",
+      "description": "The Jarvis Brain relies on the Permission Service for enforcing access policies.",
+      "strength": 0.9
+    },
+    "PermissionServiceGovernsComputerEngine": {
+      "relationship_type": "GOVERNS",
+      "source": "PermissionService",
+      "target": "ComputerUseEngine",
+      "description": "The Permission Service governs the actions performed by the Computer Use Engine.",
+      "strength": 0.9
+    },
+    "PermissionServiceGovernsAndroidApp": {
+      "relationship_type": "GOVERNS",
+      "source": "PermissionService",
+      "target": "AndroidApplication",
+      "description": "The Permission Service governs the capabilities and actions of the Android Application.",
+      "strength": 0.7
+    },
+    "JarvisBrainIntegratesRoamies": {
+      "relationship_type": "INTEGRATES",
+      "source": "JarvisBrain",
+      "target": "RoamiesAIOrchestrator",
+      "description": "The Jarvis Brain integrates the Roamies AI Orchestrator for advanced AI and automation capabilities.",
+      "strength": 0.8
+    },
+    "FastAPIServiceExposesTelephony": {
+      "relationship_type": "EXPOSES_VIA_API",
+      "source": "FastAPIService",
+      "target": "PythonTelephonyAdapter",
+      "description": "The FastAPI Service exposes the Python Telephony Adapter functionality via its API.",
+      "strength": 0.8
+    },
+    "FastAPIServiceExposesUSSD": {
+      "relationship_type": "EXPOSES_VIA_API",
+      "source": "FastAPIService",
+      "target": "USSDManager",
+      "description": "The FastAPI Service exposes the USSD Manager functionality via its API.",
+      "strength": 0.8
+    },
+    "RoamiesUsesFastAPI": {
+      "relationship_type": "USES_API",
+      "source": "RoamiesAIOrchestrator",
+      "target": "FastAPIService",
+      "description": "The Roamies AI Orchestrator interacts with the FastAPI Service to access telephony and USSD features.",
+      "strength": 0.7
+    },
+    "WindowsClientUsesVoiceEngine": {
+      "relationship_type": "USES",
+      "source": "WindowsDesktopClient",
+      "target": "VoiceSpeechEngine",
+      "description": "The Windows Desktop Client utilizes the Voice and Speech Engine for voice interaction.",
+      "strength": 0.8
+    },
+    "AndroidAppUsesVoiceEngine": {
+      "relationship_type": "USES",
+      "source": "AndroidApplication",
+      "target": "VoiceSpeechEngine",
+      "description": "The Android Application utilizes the Voice and Speech Engine for voice interaction.",
+      "strength": 0.8
+    },
+    "JarvisBrainUsesPersistentMemory": {
+      "relationship_type": "USES",
+      "source": "JarvisBrain",
+      "target": "PersistentMemory",
+      "description": "The Jarvis Brain uses Persistent Memory to store and retrieve conversation history and user preferences.",
+      "strength": 0.9
+    },
+    "WindowsClientHasHolographicInterface": {
+      "relationship_type": "HAS_INTERFACE",
+      "source": "WindowsDesktopClient",
+      "target": "HolographicInterface",
+      "description": "The Windows Desktop Client presents a Holographic Interface as its primary visual interaction.",
+      "strength": 0.9
+    },
+    "HolographicInterfaceUsesVoiceEngine": {
+      "relationship_type": "USES",
+      "source": "HolographicInterface",
+      "target": "VoiceSpeechEngine",
+      "description": "The Holographic Interface integrates the Voice and Speech Engine for voice commands and responses.",
+      "strength": 0.8
+    }
+  },
+  "architectural_patterns": {
+    "OneJarvisBrainMultipleClients": {
+      "pattern_name": "One Jarvis Brain -> Multiple Clients -> Shared Services",
+      "description": "A centralized AI brain serving multiple client applications (Windows, Android) and shared backend services.",
+      "apply_to": ["Overall Jarvis Architecture"],
+      "benefits": [
+        "Shared AI brain, memory, user identity, permissions, task history, and integrations",
+        "Unified user experience across devices",
+        "Centralized management and data consistency"
+      ],
+      "constraints": [
+        "Requires robust communication between clients and backend",
+        "Centralized points of failure if not properly designed for high availability"
+      ]
+    },
+    "HybridIntegrationRoamies": {
+      "pattern_name": "Hybrid Integration with Roamies",
+      "description": "Integrates Roamies' advanced desktop control and AI orchestration while preserving and extending existing Python telephony and USSD services.",
+      "apply_to": ["AI Orchestration", "Desktop Control", "Telephony", "USSD"],
+      "benefits": [
+        "Leverages Roamies' capabilities without rebuilding existing proven components",
+        "Faster time-to-market for advanced features",
+        "Maintains specialized Python functionality"
+      ],
+      "constraints": [
+        "Potential for integration complexity and interface challenges",
+        "Requires careful management of AGPL-3.0 compliance for Roamies components"
+      ]
+    },
+    "PerceptionActionVerificationLoop": {
+      "pattern_name": "Continuous Perception-Action-Verification Loop",
+      "description": "A cyclical process for the Computer Use Engine to observe, understand, plan, execute, and verify actions on the Windows desktop.",
+      "apply_to": ["Computer Use Engine"],
+      "benefits": [
+        "Ensures reliable and verifiable execution of tasks",
+        "Allows for safe recovery from unexpected states",
+        "Enhances autonomy within defined boundaries"
+      ],
+      "constraints": [
+        "Requires efficient computer vision and OCR",
+        "Performance critical for real-time interaction"
+      ]
+    },
+    "FivePermissionOperatingModes": {
+      "pattern_name": "Five Operating Modes Permission Model",
+      "description": "A hierarchical permission system with five distinct modes to balance AI autonomy with human authority over sensitive operations.",
+      "apply_to": ["Permission Service", "All Jarvis Components"],
+      "benefits": [
+        "Granular control over AI actions",
+        "Reduces permission fatigue for routine tasks",
+        "Ensures human oversight for critical decisions",
+        "Supports persistent delegation policies"
+      ],
+      "constraints": [
+        "Requires careful definition of decision boundaries and escalation conditions",
+        "Complex to implement and integrate across all components"
+      ]
+    },
+    "ModularLayers": {
+      "pattern_name": "Modular Layers Architecture",
+      "description": "Organizing Jarvis into distinct, interconnected modules for better maintainability, scalability, and independent development.",
+      "apply_to": ["Overall Jarvis Architecture"],
+      "benefits": [
+        "Clear separation of concerns",
+        "Facilitates parallel development",
+        "Easier to update or replace individual components",
+        "Improved testability"
+      ],
+      "constraints": [
+        "Requires well-defined interfaces and communication protocols between layers",
+        "Potential for overhead if modules are too fine-grained"
+      ]
+    }
+  },
+  "component_dependencies": {
+    "JarvisBrain": [
+      "RoamiesAIOrchestrator",
+      "PermissionService",
+      "PersistentMemory",
+      "FastAPIService",
+      "AIOrchestrationEngine",
+      "CentralPermissionAndDelegationService",
+      "BackgroundTaskScheduler",
+      "NotificationAndEscalationService",
+      "ToolAndIntegrationRouting"
+    ],
+    "WindowsDesktopClient": [
+      "JarvisBrain",
+      "ComputerUseEngine",
+      "VoiceSpeechEngine",
+      "HolographicInterface"
+    ],
+    "AndroidApplication": [
+      "JarvisBrain",
+      "VoiceSpeechEngine",
+      "AndroidDeviceAdapter"
+    ],
+    "ComputerUseEngine": [
+      "PermissionService",
+      "PyAutoGUI",
+      "WindowsUIAutomationAPI",
+      "PIL/Pillow",
+      "Tesseract",
+      "Selenium/Playwright"
+    ],
+    "FastAPIService": [
+      "PythonTelephonyAdapter",
+      "USSDManager",
+      "uvicorn",
+      "asyncio",
+      "aiohttp"
+    ],
+    "RoamiesAIOrchestrator": [
+      "FastAPIService",
+      "FishAudio",
+      "GmailAPI",
+      "CalendarAPI",
+      "TelegramAPI",
+      "SMSSender",
+      "LLMAccess"
+    ],
+    "HolographicInterface": [
+      "Three.js",
+      "ReactThreeFiber",
+      "Hologram.glb",
+      "VoiceSpeechEngine"
+    ],
+    "PythonTelephonyAdapter": ["ADB"],
+    "USSDManager": ["ADB"]
+  },
+  "data_flows": {
+    "AndroidToBackendInstruction": {
+      "source": "AndroidApplication",
+      "target": "JarvisBrain",
+      "data_type": "Instruction/Command",
+      "direction": "Client to Backend",
+      "frequency": "Interactive/Event-driven"
+    },
+    "BackendToWindowsTask": {
+      "source": "JarvisBrain",
+      "target": "WindowsDesktopClient",
+      "data_type": "Delegated Task",
+      "direction": "Backend to Client",
+      "frequency": "Event-driven"
+    },
+    "WindowsToBackendProgress": {
+      "source": "WindowsDesktopClient",
+      "target": "JarvisBrain",
+      "data_type": "Task Progress/Updates",
+      "direction": "Client to Backend",
+      "frequency": "Real-time/Streaming (WebSocket)"
+    },
+    "BackendToAndroidResult": {
+      "source": "JarvisBrain",
+      "target": "AndroidApplication",
+      "data_type": "Final Task Result/Report",
+      "direction": "Backend to Client",
+      "frequency": "Event-driven"
+    },
+    "VoiceInputToEngine": {
+      "source": "User",
+      "target": "VoiceSpeechEngine",
+      "data_type": "Audio/Voice Command",
+      "direction": "User to System",
+      "frequency": "Continuous/Interactive"
+    },
+    "EngineToJarvisCommand": {
+      "source": "VoiceSpeechEngine",
+      "target": "JarvisBrain",
+      "data_type": "Text Command/Intent",
+      "direction": "System Internal",
+      "frequency": "Event-driven"
+    },
+    "JarvisToEngineResponse": {
+      "source": "JarvisBrain",
+      "target": "VoiceSpeechEngine",
+      "data_type": "Text Response",
+      "direction": "System Internal",
+      "frequency": "Event-driven"
+    },
+    "EngineToUserVoiceOutput": {
+      "source": "VoiceSpeechEngine",
+      "target": "User",
+      "data_type": "Audio/Voice Output",
+      "direction": "System to User",
+      "frequency": "Continuous/Interactive"
+    },
+    "APITelephonyCallRequest": {
+      "source": "RoamiesAIOrchestrator",
+      "target": "FastAPIService",
+      "data_type": "Call Request (JSON)",
+      "direction": "Client to API",
+      "frequency": "Event-driven"
+    },
+    "APITelephonyCallResponse": {
+      "source": "FastAPIService",
+      "target": "RoamiesAIOrchestrator",
+      "data_type": "Call Status (JSON)",
+      "direction": "API to Client",
+      "frequency": "Event-driven"
+    },
+    "APIUSSDRequest": {
+      "source": "RoamiesAIOrchestrator",
+      "target": "FastAPIService",
+      "data_type": "USSD Balance Request (JSON)",
+      "direction": "Client to API",
+      "frequency": "Event-driven"
+    },
+    "APIUSSDResponse": {
+      "source": "FastAPIService",
+      "target": "RoamiesAIOrchestrator",
+      "data_type": "USSD Status (JSON)",
+      "direction": "API to Client",
+      "frequency": "Event-driven"
+    },
+    "MemorySync": {
+      "source": "JarvisBrain",
+      "target": "PersistentMemory",
+      "data_type": "Conversation History, User Preferences, Task State",
+      "direction": "Bidirectional",
+      "frequency": "Continuous/Event-driven"
+    },
+    "PermissionCheck": {
+      "source": "JarvisBrain",
+      "target": "PermissionService",
+      "data_type": "Action Request, Context",
+      "direction": "Backend to Service",
+      "frequency": "Per-action"
+    },
+    "PermissionDecision": {
+      "source": "PermissionService",
+      "target": "JarvisBrain",
+      "data_type": "Authorization Decision",
+      "direction": "Service to Backend",
+      "frequency": "Per-action"
+    }
+  },
+  "control_mechanisms": {
+    "FiveOperatingModes": {
+      "control_type": "Permission System",
+      "description": "A hierarchical permission model with five modes: Autonomous, Delegated Authority, Conditional Autonomy, Approval Required, and Human-Only Authority.",
+      "governed_components": [
+        "WindowsDesktopClient",
+        "AndroidApplication",
+        "ComputerUseEngine",
+        "RoamiesAIOrchestrator",
+        "PythonTelephonyAdapter",
+        "USSDManager",
+        "GmailAPI",
+        "CalendarAPI",
+        "TelegramAPI",
+        "SMSSender"
+      ],
+      "enforcement_strength": "Strict, with clear escalation protocols"
+    },
+    "PersistentDelegationPolicies": {
+      "control_type": "Policy Management",
+      "description": "Structured JSON policies defining objectives, authorized actions, constraints, decision boundaries, and escalation conditions for delegated tasks.",
+      "governed_components": ["PermissionService", "JarvisBrain"],
+      "enforcement_strength": "High, policies persist and are auditable"
+    },
+    "CentralSecurityEnforcement": {
+      "control_type": "Security Enforcement",
+      "description": "Centralized security enforcement covering secure account authentication, device registration, encrypted communication, and audit logging.",
+      "governed_components": [
+        "JarvisBrain",
+        "WindowsDesktopClient",
+        "AndroidApplication",
+        "FastAPIService",
+        "ComputerUseEngine"
+      ],
+      "enforcement_strength": "Strict, with token authentication and rate limiting"
+    },
+    "ConstraintBasedExecution": {
+      "control_type": "Task Execution Control",
+      "description": "Tasks are executed based on defined objectives, authorized actions, constraints, and decision boundaries, preventing unauthorized actions.",
+      "governed_components": ["JarvisBrain", "ComputerUseEngine"],
+      "enforcement_strength": "Moderate, with intelligent escalation to human for boundaries"
+    },
+    "IntelligentEscalation": {
+      "control_type": "Decision Escalation",
+      "description": "Protocol for pausing tasks, clearly explaining issues, presenting alternatives, and resuming tasks after human input for ambiguous or boundary-crossing situations.",
+      "governed_components": ["JarvisBrain"],
+      "enforcement_strength": "Adaptive, ensures human control at critical junctures"
+    },
+    "AGPL30Compliance": {
+      "control_type": "License Compliance",
+      "description": "Ensuring adherence to AGPL-3.0 for Roamies integration, requiring source code availability for modified versions and network service use.",
+      "governed_components": ["RoamiesAIOrchestrator", "JarvisBrain"],
+      "enforcement_strength": "Legal and Developmental"
+    },
+    "CallConfirmation": {
+      "control_type": "Safety Control",
+      "description": "All outgoing cellular calls require explicit user confirmation before execution to prevent unauthorized usage.",
+      "governed_components": ["PythonTelephonyAdapter", "FastAPIService"],
+      "enforcement_strength": "High"
+    }
+  }
+}

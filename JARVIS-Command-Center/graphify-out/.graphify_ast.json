@@ -1,0 +1,736 @@
+{
+  "nodes": [
+    {
+      "id": "ext_jarvis_command_center_app_js",
+      "label": "app.js",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "label": "toast()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L6",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_now",
+      "label": "now()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_updateclock",
+      "label": "updateClock()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L8",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_tasks",
+      "label": "tasks",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_events",
+      "label": "events",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "label": "renderTasks()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_renderevents",
+      "label": "renderEvents()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L30",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_escapehtml",
+      "label": "escapeHTML()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L35",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "label": "addEvent()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L37",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_navigate",
+      "label": "navigate()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L39",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "label": "respond()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L50",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_hologrammaterials",
+      "label": "hologramMaterials",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L70",
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_stage",
+      "label": "stage",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L71",
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_makeholomaterial",
+      "label": "makeHoloMaterial()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L76",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_setupscene",
+      "label": "setupScene()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L77",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_fitmodel",
+      "label": "fitModel()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L78",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_applyhologram",
+      "label": "applyHologram()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L79",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "label": "loadBuffer()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L80",
+      "_callable": true,
+      "metadata": {
+        "unresolved_calls": [
+          {
+            "callee": "parse",
+            "receiver_type": "GLTFLoader",
+            "lang": "typescript",
+            "line": "L80",
+            "file": "../JARVIS-Command-Center/app.js"
+          }
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_loaddefault",
+      "label": "loadDefault()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L81",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_resetcamera",
+      "label": "resetCamera()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L82",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_animate",
+      "label": "animate()",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L92",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "c_users_free_user_jarvis_jarvis_command_center_app_resizeobserver",
+      "label": "resizeObserver",
+      "file_type": "code",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L94",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "ref_three",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "ref_three",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_now",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_updateclock",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_tasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_events",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_renderevents",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_escapehtml",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_navigate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_hologrammaterials",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_stage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_makeholomaterial",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_setupscene",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_fitmodel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_applyhologram",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_loaddefault",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_resetcamera",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_animate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_resizeobserver",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_updateclock",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_now",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_escapehtml",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_renderevents",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_escapehtml",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_now",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_renderevents",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_navigate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_rendertasks",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_navigate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_addevent",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_respond",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_applyhologram",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_makeholomaterial",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_applyhologram",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_fitmodel",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_loaddefault",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "c_users_free_user_jarvis_jarvis_command_center_app_resetcamera",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_toast",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_loadbuffer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_updateclock",
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "ext_jarvis_command_center_app_js",
+      "target": "c_users_free_user_jarvis_jarvis_command_center_app_resetcamera",
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "../JARVIS-Command-Center/app.js",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "failed_sources": [],
+  "skipped_sources": [
+    "C:\\Users\\Free user\\Jarvis\\JARVIS-Command-Center\\assets\\materials.json"
+  ],
+  "extracted_sources": [
+    "C:\\Users\\Free user\\Jarvis\\JARVIS-Command-Center\\app.js",
+    "C:\\Users\\Free user\\Jarvis\\JARVIS-Command-Center\\assets\\materials.json"
+  ]
+}
