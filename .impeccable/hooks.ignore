@@ -1,0 +1,29 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": ["frontend/index.html"],
+        "createdAt": "2026-11-20T15:39:00.574Z",
+        "reason": "Intentional JARVIS cyberpunk brand identity — decorative gradient on application title is deliberate, not AI slop"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": ["frontend/index.html"],
+        "createdAt": "2026-11-20T15:40:05.905Z",
+        "reason": "Badge and label text at 11-12px is intentional compact dashboard layout for dense monitoring data"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": ["frontend/index.html"],
+        "createdAt": "2026-11-20T18:50:00.000Z",
+        "reason": "Intentional dashboard card-title pattern — h1 for app name, h3 for widget labels follows common SPA component hierarchy, not document outline semantics"
+      }
+    ]
+  }
+}
