@@ -14,6 +14,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.telephony import AndroidTelephonyAdapter
 from core.ussd import USSDManager
 
+# ── Auth + rate limiting (api/security.py) ──────────────────────────────────
+from api.security import check_rate_limit, verify_auth
+
 app = FastAPI(
     title="Jarvis Cellular & USSD Services",
     description="AI assistant for cellular calling and dual-SIM balance management",
@@ -77,7 +80,9 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from voice_command_processor import VoiceCommandProcessor
 from voice_interface import JarvisVoiceInterface
-from jarvis_voice_integration import JarvisVoiceIntegration, VoiceStatus
+from jarvis_voice_integration import JarvisVoiceIntegration
+from src.jarvis.core.enums import VoiceStatus
+from src.jarvis.runtime.event_bus import EventBus, EventType
 
 
 # ---------------------------------------------------------------------------
@@ -86,13 +91,25 @@ from jarvis_voice_integration import JarvisVoiceIntegration, VoiceStatus
 _voice_integration: Optional[JarvisVoiceIntegration] = None
 _voice_interface: Optional[JarvisVoiceInterface] = None
 _command_processor: Optional[VoiceCommandProcessor] = None
+_event_bus: Optional[EventBus] = None
+
+
+def get_event_bus() -> EventBus:
+    global _event_bus
+    if _event_bus is None:
+        _event_bus = EventBus()
+    return _event_bus
 
 
 def get_voice_integration() -> JarvisVoiceIntegration:
     global _voice_integration
     if _voice_integration is None:
         config_path = str(PROJECT_ROOT / "config" / "voice_config.json")
-        _voice_integration = JarvisVoiceIntegration(config_path=config_path, mode=None)
+        _voice_integration = JarvisVoiceIntegration(
+            config_path=config_path,
+            mode=None,
+            event_bus=get_event_bus(),
+        )
     return _voice_integration
 
 
@@ -112,7 +129,17 @@ def get_command_processor() -> VoiceCommandProcessor:
     return _command_processor
 
 
-@app.post("/voice/process")
+def get_telephony_service() -> AndroidTelephonyAdapter:
+    """Get telephony service instance"""
+    return AndroidTelephonyAdapter(ADB_PATH, DEVICE_ID)
+
+
+def get_ussd_service() -> USSDManager:
+    """Get USSD service instance"""
+    return USSDManager(ADB_PATH, DEVICE_ID)
+
+
+@app.post("/voice/process", dependencies=[Depends(verify_auth)])
 async def process_voice_command(
     text: str,
     processor: VoiceCommandProcessor = Depends(get_command_processor),
@@ -147,7 +174,7 @@ async def process_voice_command(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/voice/listen/start")
+@app.post("/voice/listen/start", dependencies=[Depends(verify_auth)])
 async def start_voice_listening():
     """Start continuous voice listening mode."""
     try:
@@ -161,7 +188,7 @@ async def start_voice_listening():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/voice/listen/stop")
+@app.post("/voice/listen/stop", dependencies=[Depends(verify_auth)])
 async def stop_voice_listening():
     """Stop continuous voice listening mode."""
     try:
@@ -175,7 +202,7 @@ async def stop_voice_listening():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/voice/status")
+@app.get("/voice/status", dependencies=[Depends(verify_auth)])
 async def get_voice_status():
     """Return current voice engine status."""
     try:
@@ -198,7 +225,7 @@ async def get_voice_status():
         }
 
 
-@app.get("/voice/history")
+@app.get("/voice/history", dependencies=[Depends(verify_auth)])
 async def get_voice_history(limit: int = 20):
     """Return recent voice command history."""
     try:
@@ -210,7 +237,7 @@ async def get_voice_history(limit: int = 20):
         return {"history": []}
 
 
-@app.get("/voice/help")
+@app.get("/voice/help", dependencies=[Depends(verify_auth)])
 async def get_voice_help():
     """Return available voice command help."""
     try:
@@ -219,14 +246,6 @@ async def get_voice_help():
     except Exception as e:
         return {"help": [], "error": str(e)}
 
-
-def get_telephony_service() -> AndroidTelephonyAdapter:
-    """Get telephony service instance"""
-    return AndroidTelephonyAdapter(ADB_PATH, DEVICE_ID)
-
-def get_ussd_service() -> USSDManager:
-    """Get USSD service instance"""
-    return USSDManager(ADB_PATH, DEVICE_ID)
 
 @app.get("/health")
 async def health_check():
@@ -237,7 +256,7 @@ async def health_check():
         "version": "2.0.0"
     }
 
-@app.get("/sims")
+@app.get("/sims", dependencies=[Depends(verify_auth)])
 async def get_sim_details(
     telephony: AndroidTelephonyAdapter = Depends(get_telephony_service),
     ussd: USSDManager = Depends(get_ussd_service)
@@ -265,7 +284,7 @@ async def get_sim_details(
         logger.error(f"Error fetching SIM details: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/call")
+@app.post("/call", dependencies=[Depends(check_rate_limit), Depends(verify_auth)])
 async def initiate_call(
     target: str,
     telephony: AndroidTelephonyAdapter = Depends(get_telephony_service)
@@ -289,7 +308,7 @@ async def initiate_call(
         logger.error(f"Error in call endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/calls/hangup")
+@app.post("/calls/hangup", dependencies=[Depends(check_rate_limit), Depends(verify_auth)])
 async def terminate_call(
     telephony: AndroidTelephonyAdapter = Depends(get_telephony_service)
 ):
@@ -311,7 +330,7 @@ async def terminate_call(
         logger.error(f"Error in hangup endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/ussd/balance")
+@app.post("/ussd/balance", dependencies=[Depends(check_rate_limit), Depends(verify_auth)])
 async def check_balance(
     sim_id: str = "SIM1",
     ussd: USSDManager = Depends(get_ussd_service)
@@ -333,7 +352,7 @@ async def check_balance(
         logger.error(f"Error checking balance: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/status")
+@app.get("/status", dependencies=[Depends(verify_auth)])
 async def get_system_status(
     telephony: AndroidTelephonyAdapter = Depends(get_telephony_service)
 ):
@@ -355,7 +374,7 @@ async def get_system_status(
         "timestamp": time.time()
     }
 
-@app.get("/network")
+@app.get("/network", dependencies=[Depends(verify_auth)])
 async def detect_network(number: str = "+251954531474"):
     """Detect the operator and USSD code for a phone number."""
     network, ussd_code = USSDManager.identify_network(number)

@@ -6,15 +6,48 @@ import {
   SystemStatus,
 } from '../types'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:31415'
-const API_KEY_STORAGE_KEY = 'jarvis_llm_api_key'
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000'
+const LLM_KEY_STORAGE_KEY = 'jarvis_llm_api_key'
+const AUTH_TOKEN_STORAGE_KEY = 'jarvis_auth_token'
+const TOKEN_PROMPTED_KEY = 'jarvis_token_prompted'
 
 function loadApiKey(): string {
   try {
-    return localStorage.getItem(API_KEY_STORAGE_KEY) || ''
+    return localStorage.getItem(LLM_KEY_STORAGE_KEY) || ''
   } catch {
     return ''
   }
+}
+
+function loadAuthToken(): string {
+  try {
+    return localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || ''
+  } catch {
+    return ''
+  }
+}
+
+/** Prompt the user for the auth token once; store it in localStorage. */
+async function promptAuthToken(): Promise<string | null> {
+  if (localStorage.getItem(TOKEN_PROMPTED_KEY)) return null
+  const val = window.prompt(
+    'JARVIS requires an authentication token.\n\nOpen http://127.0.0.1:8000/api/health or check your .env file for the value of JARVIS_API_TOKEN, then paste it below.'
+  )
+  if (val === null) return null // cancelled
+  const trimmed = val.trim()
+  if (!trimmed) return null
+  localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, trimmed)
+  localStorage.setItem(TOKEN_PROMPTED_KEY, '1')
+  return trimmed
+}
+
+let _promptPending: Promise<string | null> | null = null
+
+function ensureTokenPrompt(): Promise<string | null> {
+  if (!_promptPending) {
+    _promptPending = promptAuthToken().finally(() => { _promptPending = null })
+  }
+  return _promptPending
 }
 
 interface VoiceProcessResult {
@@ -34,7 +67,8 @@ interface VoiceStatus {
 export class JarvisAPI {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE}${endpoint}`
-    const apiKey = loadApiKey()
+    let apiKey = loadApiKey()
+    let authToken = loadAuthToken()
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       ...(options.headers as Record<string, string>),
@@ -42,16 +76,51 @@ export class JarvisAPI {
     if (apiKey) {
       headers['Authorization'] = `Bearer ${apiKey}`
     }
-    const response = await fetch(url, {
+    if (authToken) {
+      headers['X-Jarvis-Auth'] = authToken
+    }
+
+    let response = await fetch(url, {
       ...options,
       headers,
     })
+
+    // On 401 without a stored token, prompt once and retry
+    if (!response.ok && response.status === 401 && !authToken) {
+      const refreshed = await ensureTokenPrompt()
+      if (!refreshed) throw new Error('Authentication token not provided')
+      authToken = refreshed
+      headers['X-Jarvis-Auth'] = authToken
+      response = await fetch(url, {
+        ...options,
+        headers,
+      })
+    }
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status} ${response.statusText}`)
     }
 
     return response.json()
+  }
+
+  /** Create a WebSocket connection to the bridge server with auth token via query param. */
+  connectWebSocket(onMessage: (data: unknown) => void, onOpen?: () => void): () => void {
+    const token = loadAuthToken()
+    const wsUrl = `${API_BASE.replace('http://', 'ws://').replace('https://', 'wss://')}/ws${token ? `?token=${encodeURIComponent(token)}` : ''}`
+    const ws = new WebSocket(wsUrl)
+
+    ws.onmessage = (e) => {
+      try {
+        onMessage(JSON.parse(e.data))
+      } catch {
+        onMessage(e.data)
+      }
+    }
+    ws.onopen = () => onOpen?.()
+
+    // Return cleanup function
+    return () => ws.close()
   }
 
   // ── Health & Status ────────────────────────────────────────────────────────

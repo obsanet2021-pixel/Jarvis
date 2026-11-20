@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Optional
 # ── FastAPI / uvicorn (lightweight addition; installs on first run if missing) ──
 
 try:
-    from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+    from fastapi import Depends, FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import HTMLResponse, JSONResponse
 except ImportError:
@@ -36,6 +36,7 @@ except ImportError:
 # ── Project modules ────────────────────────────────────────────────────────────
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from api.security import verify_auth  # noqa: E402
 from src.jarvis.runtime.event_bus import Event, EventBus, EventType  # noqa: E402
 from src.jarvis.permissions.approval_manager import ApprovalManager  # noqa: E402
 from src.jarvis.permissions.policy_engine import DEFAULT_POLICIES, PermissionLevel  # noqa: E402
@@ -188,15 +189,32 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
             "timestamp": time.time(),
         }
 
-    @app.get("/state")
+    @app.get("/state", dependencies=[Depends(verify_auth)])
     async def get_state():
         return dict(_live_state)
 
     # ── WebSocket endpoint ───────────────────────────────────────────────────
 
     @app.websocket("/ws")
-    async def websocket_endpoint(ws: WebSocket):
+    async def websocket_endpoint(ws: WebSocket, token: Optional[str] = Query(None)):
         session_id = str(uuid.uuid4())[:8]
+
+        # Accept token as ?token=... or first message
+        if not token:
+            try:
+                raw = await asyncio.wait_for(ws.receive_text(), timeout=8)
+                token = raw.strip()
+            except (asyncio.TimeoutError, WebSocketDisconnect):
+                await ws.close(code=4001)
+                return
+
+        try:
+            verify_auth(token)
+        except HTTPException:
+            await ws.close(code=4001)
+            logger.warning("WS auth failed for session %s", session_id)
+            return
+
         await ws.accept()
         _clients[session_id] = ws
         await ws.send_json({"type": "snapshot", "data": dict(_live_state)})
@@ -222,7 +240,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
 
     # ── AI Configuration ─────────────────────────────────────────────────────
 
-    @app.get("/config/ai")
+    @app.get("/config/ai", dependencies=[Depends(verify_auth)])
     async def get_ai_config():
         cfg = _load_config()
         return {
@@ -233,7 +251,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
             "api_key_set": bool(cfg.get("freellmapi_api_key")),
         }
 
-    @app.post("/config/ai")
+    @app.post("/config/ai", dependencies=[Depends(verify_auth)])
     async def save_ai_config(body: dict):
         cfg = _load_config()
         cfg["freellmapi_base_url"] = body.get("base_url", cfg.get("freellmapi_base_url", ""))
@@ -247,7 +265,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
         await _broadcast({"type": "config_updated", "config": await get_ai_config()})
         return {"status": "saved"}
 
-    @app.post("/config/ai/test")
+    @app.post("/config/ai/test", dependencies=[Depends(verify_auth)])
     async def test_ai_config(body: dict):
         """Lightweight test: call the configured endpoint with a short prompt."""
         cfg = _load_config()
@@ -272,7 +290,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
 
     # ── Tools ────────────────────────────────────────────────────────────────
 
-    @app.get("/tools")
+    @app.get("/tools", dependencies=[Depends(verify_auth)])
     async def list_tools():
         try:
             reg = create_jarvis_tool_registry()
@@ -289,7 +307,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
 
     _perm_manager = ApprovalManager(timeout=300.0)
 
-    @app.get("/permissions")
+    @app.get("/permissions", dependencies=[Depends(verify_auth)])
     async def get_permissions():
         policies = {}
         for name, pol in DEFAULT_POLICIES.items():
@@ -305,13 +323,13 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
         history = [asdict(r) for r in _perm_manager.get_history()[-50:]]
         return {"policies": policies, "pending_requests": pending, "history": history}
 
-    @app.post("/permissions/{request_id}/approve")
+    @app.post("/permissions/{request_id}/approve", dependencies=[Depends(verify_auth)])
     async def approve_request(request_id: str):
         ok = _perm_manager.approve(request_id)
         await _broadcast({"type": "permission_result", "id": request_id, "approved": ok})
         return {"approved": ok}
 
-    @app.post("/permissions/{request_id}/deny")
+    @app.post("/permissions/{request_id}/deny", dependencies=[Depends(verify_auth)])
     async def deny_request(request_id: str):
         ok = _perm_manager.deny(request_id)
         await _broadcast({"type": "permission_result", "id": request_id, "approved": False})
@@ -319,7 +337,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
 
     # ── Simulator ─────────────────────────────────────────────────────────────
 
-    @app.post("/simulate/event")
+    @app.post("/simulate/event", dependencies=[Depends(verify_auth)])
     async def simulate_event(body: dict):
         """Push a synthetic event into the bus for UI testing."""
         evt_type_str = body.get("event", "task.completed")
@@ -330,7 +348,7 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
         _event_bus.publish_simple(evt_type, data=body.get("data", {}), source="simulator")
         return {"status": "simulated"}
 
-    @app.post("/simulate/state")
+    @app.post("/simulate/state", dependencies=[Depends(verify_auth)])
     async def simulate_state(body: dict):
         """Directly update the live state displayed in the UI."""
         for k, v in body.items():
@@ -340,17 +358,17 @@ def _build_app(event_bus: EventBus, port: int | None = None) -> FastAPI:
 
     # ── Log reading ──────────────────────────────────────────────────────────
 
-    @app.get("/logs")
+    @app.get("/logs", dependencies=[Depends(verify_auth)])
     async def get_logs(limit: int = 200):
         buf = list(reversed(_live_state.get("log_buffer", [])))
         return {"logs": buf[:limit]}
 
-    @app.post("/logs/clear")
+    @app.post("/logs/clear", dependencies=[Depends(verify_auth)])
     async def clear_logs():
         _live_state["log_buffer"] = []
         return {"cleared": True}
 
-    @app.get("/voice/status")
+    @app.get("/voice/status", dependencies=[Depends(verify_auth)])
     async def get_voice_status():
         """Return current voice integration state for the Voice Settings page."""
         return {
