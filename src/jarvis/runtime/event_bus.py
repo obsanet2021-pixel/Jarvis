@@ -33,6 +33,9 @@ class EventType(Enum):
     COMMAND_TRANSCRIBED = "command.transcribed"
     SPEECH_STARTING = "speech.starting"
     SPEECH_ENDED = "speech.ended"
+    VOICE_STATUS_CHANGE = "voice.status_change"
+    COMMAND_PROCESSED = "command.processed"
+    VOICE_ERROR = "voice.error"
 
 
 @dataclass

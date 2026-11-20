@@ -357,8 +357,13 @@ tr:hover td { background: var(--surface2); }
 
 <script>
 // ─── Constants ───────────────────────────────────────────────────────────────
-const BRIDGE_WS  = 'ws://' + location.hostname + ':8765/ws';
+const BRIDGE_WS  = 'ws://' + location.hostname + ':8765';
 const BRIDGE_API = 'http://' + location.hostname + ':8765';
+const TOKEN_STORAGE_KEY = 'jarvis_auth_token';
+
+function getAuthToken() {
+  try { return localStorage.getItem(TOKEN_STORAGE_KEY) || ''; } catch { return ''; }
+}
 
 let ws            = null;
 let reconnectTimer = null;
@@ -392,11 +397,58 @@ function toast(msg, type = 'info') {
   setTimeout(() => el.remove(), 4000);
 }
 
+// ─── Auth ──────────────────────────────────────────────────────────────────
+let pendingTokenPrompt = null;
+
+async function ensureAuth() {
+  const token = getAuthToken();
+  if (token) return token;
+  if (pendingTokenPrompt) return pendingTokenPrompt;
+  pendingTokenPrompt = new Promise(resolve => {
+    const val = window.prompt(
+      'JARVIS requires an authentication token.\n\nCheck your .env file for JARVIS_API_TOKEN, then paste it below.'
+    );
+    pendingTokenPrompt = null;
+    if (!val || !val.trim()) return resolve('');
+    const t = val.trim();
+    try { localStorage.setItem(TOKEN_STORAGE_KEY, t); } catch {}
+    resolve(t);
+  });
+  return pendingTokenPrompt;
+}
+
+// ─── Authenticated fetch helper ─────────────────────────────────────────────
+async function authFetch(url, options = {}) {
+  let authToken = getAuthToken();
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (authToken) headers['X-Jarvis-Auth'] = authToken;
+  let resp = await fetch(url, { ...options, headers });
+  // On 401 without stored token, prompt once
+  if (!resp.ok && resp.status === 401 && !authToken) {
+    const fresh = await ensureAuth();
+    if (!fresh) throw new Error('Authentication token not provided');
+    headers['X-Jarvis-Auth'] = fresh;
+    resp = await fetch(url, { ...options, headers });
+  }
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+  return resp.json();
+}
+
 // ─── WebSocket ───────────────────────────────────────────────────────────────
-function connectWS() {
+let ws = null;
+let reconnectTimer = null;
+let eventCount = 0;
+let logsBuffer = [];
+let stateSnapshot = {};
+let chatHistory = [];
+const VOICE_HISTORY_MAX = 50;
+
+async function connectWS() {
   if (ws && ws.readyState <= 1) return;
   setConnStatus('connecting');
-  ws = new WebSocket(BRIDGE_WS);
+  const token = await ensureAuth();
+  const qs = token ? `?token=${encodeURIComponent(token)}` : '';
+  ws = new WebSocket(BRIDGE_WS + '/ws' + qs);
 
   ws.onopen = () => {
     setConnStatus('online');
@@ -506,14 +558,12 @@ function updateDashboard() {
   updateHologram(js);
 }
 
-function refreshState() {
-  fetch(BRIDGE_API + '/state')
-    .then(r => r.json())
-    .then(data => {
-      stateSnapshot = data;
-      updateDashboard();
-    })
-    .catch(err => toast('Failed to refresh state: ' + err, 'error'));
+async function refreshState() {
+  try {
+    const data = await authFetch(BRIDGE_API + '/state');
+    stateSnapshot = data;
+    updateDashboard();
+  } catch (err) { toast('Failed to refresh state: ' + err, 'error'); }
 }
 
 // ─── Hologram Canvas (simple animated ring) ─────────────────────────────────
@@ -568,8 +618,7 @@ function updateHologram(state) {
 // ─── AI Config ───────────────────────────────────────────────────────────────
 async function loadAIConfig() {
   try {
-    const r = await fetch(BRIDGE_API + '/config/ai');
-    const c = await r.json();
+    const c = await authFetch(BRIDGE_API + '/config/ai');
     document.getElementById('cfg-api-key').value = c.api_key_set ? '••••••••' : '';
     document.getElementById('cfg-base-url').value = c.base_url;
     document.getElementById('cfg-model').value = c.model;
@@ -583,8 +632,7 @@ async function saveAIConfig(testAfter) {
     model:       document.getElementById('cfg-model').value,
   };
   try {
-    const r = await fetch(BRIDGE_API + '/config/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    const j = await r.json();
+    const j = await authFetch(BRIDGE_API + '/config/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     if (j.status === 'saved') {
       toast('Config saved', 'success');
       if (testAfter) testAIConfig(payload);
@@ -596,8 +644,7 @@ async function testAIConfig(payload) {
   const out = document.getElementById('ai-test-result');
   out.innerHTML = '<span style="color:var(--warn)">Testing connection…</span>';
   try {
-    const r = await fetch(BRIDGE_API + '/config/ai/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    const j = await r.json();
+    const j = await authFetch(BRIDGE_API + '/config/ai/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     if (j.success) {
       out.innerHTML = `<span style="color:var(--success)">✓ Connection OK — response: "${j.response}"</span>`;
       toast('AI test successful', 'success');
@@ -630,7 +677,7 @@ async function sendChat() {
 
   // Send as simulated voice command through bridge
   try {
-    await fetch(BRIDGE_API + '/simulate/event', {
+    await authFetch(BRIDGE_API + '/simulate/event', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event: 'tool.executed', data: { tool: 'ai_converse', input: text } })
@@ -644,8 +691,7 @@ async function sendChat() {
 // ─── Voice ───────────────────────────────────────────────────────────────────
 async function fetchVoiceStatus() {
   try {
-    const r = await fetch(BRIDGE_API + '/voice/status');
-    const d = await r.json();
+    const d = await authFetch(BRIDGE_API + '/voice/status');
     document.getElementById('voice-listening').textContent  = d.is_listening  ? 'Yes' : 'No';
     document.getElementById('voice-listening').className   = 'badge ' + (d.is_listening  ? 'badge-green' : 'badge-gray');
     document.getElementById('voice-speaking').textContent  = d.is_speaking   ? 'Yes' : 'No';
@@ -661,8 +707,7 @@ async function fetchVoiceStatus() {
 // ─── Tools ───────────────────────────────────────────────────────────────────
 async function loadTools() {
   try {
-    const r = await fetch(BRIDGE_API + '/tools');
-    const d = await r.json();
+    const d = await authFetch(BRIDGE_API + '/tools');
     const cont = document.getElementById('tools-container');
     if (d.error) { cont.innerHTML = `<p style="color:var(--danger);">Error loading tools: ${d.error}</p>`; return; }
 
@@ -685,8 +730,7 @@ async function loadTools() {
 // ─── Permissions ─────────────────────────────────────────────────────────────
 async function loadPermissions() {
   try {
-    const r = await fetch(BRIDGE_API + '/permissions');
-    const d = await r.json();
+    const d = await authFetch(BRIDGE_API + '/permissions');
     const cont = document.getElementById('perms-container');
     if (d.error) { cont.innerHTML = `<p style="color:var(--danger);">${d.error}</p>`; return; }
 
@@ -721,8 +765,8 @@ async function loadPermissions() {
 }
 
 async function handlePerm(id, approve) {
-  const url = approve ? `/permissions/${id}/approve` : `/permissions/${id}/deny`;
-  await fetch(BRIDGE_API + url, { method: 'POST' });
+  const url = approve ? '/permissions/' + id + '/approve' : '/permissions/' + id + '/deny';
+  await authFetch(BRIDGE_API + url, { method: 'POST' });
   loadPermissions();
 }
 
@@ -739,7 +783,7 @@ function appendLogs(newEntries) {
 }
 
 async function clearLogs() {
-  await fetch(BRIDGE_API + '/logs/clear', { method: 'POST' });
+  await authFetch(BRIDGE_API + '/logs/clear', { method: 'POST' });
   logsBuffer = [];
   document.getElementById('full-logs').innerHTML = '';
   document.getElementById('dash-logs').innerHTML = '';
@@ -755,7 +799,7 @@ function downloadLogs() {
 
 // ─── Simulate ────────────────────────────────────────────────────────────────
 async function simulateEvent(eventType, data) {
-  await fetch(BRIDGE_API + '/simulate/event', {
+  await authFetch(BRIDGE_API + '/simulate/event', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ event: eventType, data })
   });
